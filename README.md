@@ -7,3 +7,4 @@ Things That Are Working:
   - bottom bar navigates between screens
   - myprofile loads the events that this individual user posted
   - if the user is logged in it goes straight to posts
+  - in testflight (aaye)
