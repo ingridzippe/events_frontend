@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  AsyncStorage,
   View,
   Text,
   TouchableOpacity,
@@ -10,12 +11,17 @@ import styles from '../styles/styles';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
-const domain = 'https://something-horizons.herokuapp.com';
+// const domain = 'https://something-horizons.herokuapp.com';
+const domain = "https://still-citadel-74266.herokuapp.com";
 
 class MessagesScreen extends React.Component {
   static navigationOptions = {
-    title: 'Ventful', //you put the title you want to be displayed here
-    headerLeft: null
+    title: 'Drip', //you put the title you want to be displayed here
+    headerLeft: null,
+    headerTintColor: "#fff",
+    headerStyle: {
+      backgroundColor: "#000"
+    }
   };
   constructor(props) {
     super(props);
@@ -23,7 +29,7 @@ class MessagesScreen extends React.Component {
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
-    fetch('http://localhost:3000/events')
+    fetch(`${domain}/events`)
     .then((response) => response.json())
     .then((responseJson) => {
         console.log('responseJson', responseJson);
@@ -39,6 +45,18 @@ class MessagesScreen extends React.Component {
       console.log(err);
       console.log('it errored MMMMM');
     });
+  }
+  componentDidMount() {
+    // if there is a user in phone storage, go to posts
+    AsyncStorage.getItem('dripuser')
+      .then((result) => {
+        console.log(result);
+        if(result) {
+          console.log('yes user, stay on posts');
+        } else {
+          this.props.navigation.navigate('Login')
+        }
+      })
   }
   // componentDidMount() {
   //   this.props.navigation.setParams({
@@ -152,7 +170,12 @@ class MessagesScreen extends React.Component {
   // }
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <View style={{
+        flex: 1,
+        backgroundColor: '#282f37',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
         {/* <TouchableOpacity
             style={[styles.button, styles.buttonBlue]}
             onPress={() => { this.props.navigation.navigate('Create'); }}
@@ -178,9 +201,14 @@ class MessagesScreen extends React.Component {
             <TouchableOpacity style={styles.event}>
               {!rowData.eventLatitude &&
                 <View>
-                <Text style={styles.words}>When: {rowData.eventDate}</Text>
-                <Text style={styles.words}>Where: {rowData.eventLocation}</Text>
-                <Text style={styles.words}>What: {rowData.eventDescription}</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={{borderWidth: 1, borderRadius: 20, height: 40, width: 40}} />
+                  <Text style={styles.user}>{rowData.user}</Text>
+                </View>
+                <Text>Image</Text>
+                <Text style={styles.words}>Date: {rowData.eventDate}</Text>
+                <Text style={styles.words}>Place: {rowData.eventLocation}</Text>
+                <Text style={styles.words}>More: {rowData.eventDescription}</Text>
                 </View>}
               {/* {rowData.eventLatitude &&
                 <MapView

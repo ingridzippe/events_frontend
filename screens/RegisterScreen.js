@@ -14,7 +14,8 @@ import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
-const domain = 'https://something-horizons.herokuapp.com';
+// const domain = 'https://something-horizons.herokuapp.com';
+const domain = "https://still-citadel-74266.herokuapp.com";
 
 class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -62,7 +63,7 @@ class RegisterScreen extends React.Component {
     }
   }
   // Handle Login with Facebook button tap
-  loginWithFacebook = () => this.openURL('http://localhost:3000/fb/login');
+  loginWithFacebook = () => this.openURL(`${domain}/fb/login`);
   openURL = (url) => {
     // Use SafariView on iOS
     if (Platform.OS === 'ios') {
@@ -78,7 +79,7 @@ class RegisterScreen extends React.Component {
 
   postLogin() {
     console.log('signup clicked');
-    return fetch('http://localhost:3000/register', {
+    return fetch(`${domain}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -127,7 +128,7 @@ class RegisterScreen extends React.Component {
   //     });
   // }
   fb() {
-    fetch('http://localhost:3000/fb/login')
+    fetch(`${domain}/fb/login`)
       .then((response) => console.log(response))
     // .then((response) => { return response.json() } )
     // .then((response) => {

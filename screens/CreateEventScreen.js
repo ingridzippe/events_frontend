@@ -12,6 +12,9 @@ import BottomBarNav from '../components/BottomBarNav';
 import DatePicker from '../components/DatePicker';
 // import ImagePicker from 'react-native-image-crop-picker';
 import styles from '../styles/styles';
+
+// const domain = "https://something-horizons.herokuapp.com";
+const domain = 'https://still-citadel-74266.herokuapp.com';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 // const domain = 'https://something-horizons.herokuapp.com';
@@ -29,7 +32,7 @@ var defaultProps = {
 
 class CreateEventScreen extends React.Component {
   static navigationOptions = {
-    title: 'Ventful',
+    title: 'Drip',
     headerLeft: null
   };
   constructor(props) {
@@ -52,7 +55,7 @@ class CreateEventScreen extends React.Component {
     this.setState({modalVisible: false});
   }
   postCreateEvent() {
-  fetch('http://localhost:3000/create', {
+  fetch(`${domain}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -65,7 +68,8 @@ class CreateEventScreen extends React.Component {
     })
     .then((response) => {
         console.log('RESPONSE', response);
-        response.json();
+        console.log('RESPONSE.JSON', response.json());
+
     })
     .then((responseJson) => {
       /* do something with responseJson and go back to the Login view but

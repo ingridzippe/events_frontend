@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
-const domain = 'https://something-horizons.herokuapp.com';
+// const domain = 'https://something-horizons.herokuapp.com';
+const domain = "https://still-citadel-74266.herokuapp.com";
 
 class MyProfileScreen extends React.Component {
   static navigationOptions = {
@@ -25,7 +26,7 @@ class MyProfileScreen extends React.Component {
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
-    fetch('http://localhost:3000/myevents')
+    fetch(`${domain}/myevents`)
     .then((response) => response.json())
     .then((responseJson) => {
         console.log('responseJson', responseJson);

@@ -14,7 +14,8 @@ import styles from '../styles/styles';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
-const domain = 'https://something-horizons.herokuapp.com';
+// const domain = 'https://something-horizons.herokuapp.com';
+const domain = "https://still-citadel-74266.herokuapp.com";
 
 class LoginScreen extends React.Component {
  static navigationOptions = {
@@ -58,7 +59,7 @@ class LoginScreen extends React.Component {
        this.props.navigation.navigate('Messages');
    }
  }
- loginWithFacebook = () => this.openURL('http://localhost:3000/fb/login');
+ loginWithFacebook = () => this.openURL(`${domain}/fb/login`);
  openURL = (url) => {
    // Use SafariView on iOS
    if (Platform.OS === 'ios') {
@@ -74,7 +75,7 @@ class LoginScreen extends React.Component {
  postLogin() {
  console.log('signing in');
  console.log('domain', domain);
- return fetch('http://localhost:3000/login', {
+ return fetch(`${domain}/login`, {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json'
@@ -87,7 +88,7 @@ class LoginScreen extends React.Component {
    .then((response) => response.json())
    .then((responseJson) => {
      if (responseJson.success) {
-       AsyncStorage.setItem('user', JSON.stringify(responseJson.user));
+       AsyncStorage.setItem('dripuser', JSON.stringify(responseJson.user));
        this.props.navigation.navigate('Messages');
      } else {
        alert('Invalid credentials bruh');

@@ -6,22 +6,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#282f37',
     // backgroundColor: '#F5FCFF',
   },
   containerFull: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
+    // white
+    // backgroundColor: '#F5FCFF',
+    // dark
+    backgroundColor: '#282f37'
   },
   eventsContainer: {
     flex: 1,
     // borderColor: '#000',
     // borderWidth: 1,
-    backgroundColor: '#fff',
-    width: 360,
-    marginLeft: 30
+    // backgroundColor: '#fff',
+    backgroundColor: '#282f37',
+    alignSelf: 'center'
   },
   smallButton: {
     marginTop: 10,
@@ -63,25 +66,36 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginBottom: 20,
     borderRadius: 5,
-    color: '#000',
+    color: '#fff',
     borderColor: '#a5c0df',
     borderWidth: 1
   },
   event: {
+    alignSelf: 'stretch',
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 10,
-    width: 310,
-    height: 85,
+    height: 150,
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: '#a5c0df',
+    // borderColor: '#a5c0df',
+    borderColor: '#fff'
+  },
+  user: {
+    width: 270,
+    marginTop: 6,
+    marginLeft: 20,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: '#fff'
   },
   words: {
     width: 270,
     marginTop: 6,
     marginLeft: 20,
-    fontSize: 16
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: '300'
   },
   button: {
     alignSelf: 'stretch',
@@ -119,7 +133,10 @@ const styles = StyleSheet.create({
   },
   bottombar: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    // white
+    // backgroundColor: '#f7f7f7',
+    // dark
+    backgroundColor: '#282f37',
     height: 60,
     borderTopWidth: 0.5,
     borderColor: '#a5c0df',
@@ -129,12 +146,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    // borderWidth: 1,
-    // borderRadius: 10,
-    // borderColor: '#a5c0df',
+    borderTopWidth: 1,
+    borderRadius: 1,
+    borderColor: '#a5c0df',
   },
   bottombaritem: {
-    marginTop: 14.5,
+    paddingTop: 14.5,
     flex: 0.2,
     alignItems: 'center',
   }

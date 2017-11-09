@@ -51,6 +51,6 @@ export default StackNavigator({
     screen: MyProfileScreen,
   },
 }, {
-  initialRouteName: 'Login',
+  initialRouteName: 'Messages',
   headerMode: 'screen'
 });
