@@ -6,7 +6,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#282f37',
+    // dark
+    // backgroundColor: '#282f37',
+    // transparent
+    backgroundColor: 'transparent',
     // backgroundColor: '#F5FCFF',
   },
   containerFull: {
@@ -16,14 +19,28 @@ const styles = StyleSheet.create({
     // white
     // backgroundColor: '#F5FCFF',
     // dark
-    backgroundColor: '#282f37'
+    // backgroundColor: '#282f37',
+    // transparent
+    backgroundColor: 'transparent',
+    borderRadius: 5,
+    borderColor: '#ffb6c1',
+    borderWidth: 20
+  },
+  backgroundImage: {
+    flex: 1,
+    width: null,
+    height: null,
+    // resizeMode: 'cover'
   },
   eventsContainer: {
     flex: 1,
     // borderColor: '#000',
     // borderWidth: 1,
     // backgroundColor: '#fff',
-    backgroundColor: '#282f37',
+    // dark
+    // backgroundColor: '#282f37',
+    // transparent
+    backgroundColor: 'transparent',
     alignSelf: 'center'
   },
   smallButton: {
@@ -51,6 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   textBig: {
+    color: '#fff',
     fontSize: 30,
     textAlign: 'center',
     margin: 25,
@@ -67,7 +85,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 5,
     color: '#fff',
-    borderColor: '#a5c0df',
+    borderColor: '#fff',
+    // borderColor: '#a5c0df',
     borderWidth: 1
   },
   event: {
@@ -110,7 +129,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF585B',
   },
   buttonBlue: {
-    backgroundColor: '#0198E1'
+    backgroundColor: '#13111c'
+    // backgroundColor: '#0198E1'
     // backgroundColor: '#0074D9',
   },
   buttonGreen: {
@@ -136,10 +156,13 @@ const styles = StyleSheet.create({
     // white
     // backgroundColor: '#f7f7f7',
     // dark
-    backgroundColor: '#282f37',
+    // backgroundColor: '#282f37',
+    // purple-dark
+    backgroundColor: '#13111c',
+    // backgroundColor: '#241a22',
     height: 60,
     borderTopWidth: 0.5,
-    borderColor: '#a5c0df',
+    // borderColor: '#a5c0df',
     flexDirection: 'row',
     justifyContent: 'space-between',
     position: 'absolute',
@@ -148,7 +171,19 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderTopWidth: 1,
     borderRadius: 1,
-    borderColor: '#a5c0df',
+    // borderColor: '#a5c0df',
+  },
+  topbar: {
+    alignItems: 'center',
+    backgroundColor: '#13111c',
+    // backgroundColor: '#241a22',
+    height: 69,
+    borderBottomWidth: 0.5,
+    // borderColor: '#a5c0df',
+    justifyContent: 'center',
+    borderTopWidth: 1,
+    borderRadius: 1,
+    // borderColor: '#a5c0df',
   },
   bottombaritem: {
     paddingTop: 14.5,

@@ -9,6 +9,8 @@ import {
   // DatePickerIOS,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
+import TopBar from '../components/TopBar';
+import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 // import ImagePicker from 'react-native-image-crop-picker';
 import styles from '../styles/styles';
@@ -33,7 +35,7 @@ var defaultProps = {
 class CreateEventScreen extends React.Component {
   static navigationOptions = {
     title: 'Drip',
-    headerLeft: null
+    header: null
   };
   constructor(props) {
     super(props);
@@ -101,6 +103,8 @@ class CreateEventScreen extends React.Component {
   }
   render() {
     return (
+        <Background>
+        <TopBar />
         <View style={styles.container}>
           <Text style={styles.textBig}>Create an event.</Text>
           {/* <TouchableOpacity
@@ -143,17 +147,20 @@ class CreateEventScreen extends React.Component {
 
           <TextInput
             style={styles.input}
-            placeholder='When'
+            placeholderTextColor='#fff'
+            placeholder='Date, eg. 11-11-17'
             onChangeText={(text) => this.setState({ eventDate: text })}
           />
           <TextInput
             style={styles.input}
-            placeholder='Location'
+            placeholderTextColor='#fff'
+            placeholder='Place'
             onChangeText={(text) => this.setState({ eventLocation: text })}
           />
             <TextInput
               style={styles.input}
-              placeholder='Description'
+              placeholderTextColor='#fff'
+              placeholder='What else?'
               onChangeText={(text) => this.setState({ eventDescription: text })}
             />
           <TouchableOpacity
@@ -164,6 +171,7 @@ class CreateEventScreen extends React.Component {
           </TouchableOpacity>
           <BottomBarNav navigation={this.props.navigation} />
         </View>
+        </Background>
     );
   }
 }

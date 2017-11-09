@@ -6,6 +6,8 @@ import {
   ListView,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
+import TopBar from '../components/TopBar';
+import Background from '../components/Background';
 // import BottomBar from '../components/BottomBar';
 import styles from '../styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -18,7 +20,7 @@ const domain = "https://still-citadel-74266.herokuapp.com";
 class MyProfileScreen extends React.Component {
   static navigationOptions = {
     title: 'Ventful', //you put the title you want to be displayed here
-    headerLeft: null
+    header: null
   };
   constructor(props) {
     super(props);
@@ -45,7 +47,9 @@ class MyProfileScreen extends React.Component {
   }
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: '#fff' }}>
+      <Background>
+      <TopBar />
+      <View style={{ flex: 1, backgroundColor: 'transparent' }}>
         <View style={{ flexDirection: 'row' }}>
           <View style={{
             borderWidth: 0.5,
@@ -128,6 +132,7 @@ class MyProfileScreen extends React.Component {
         />
         <BottomBarNav navigation={this.props.navigation} />
       </View>
+      </Background>
     );
   }
 }

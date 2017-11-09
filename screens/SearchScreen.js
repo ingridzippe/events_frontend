@@ -8,6 +8,8 @@ import {
   Button,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
+import TopBar from '../components/TopBar';
+import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
 
@@ -16,7 +18,7 @@ const domain = "https://still-citadel-74266.herokuapp.com";
 class SearchScreen extends React.Component {
   static navigationOptions = {
     title: 'Ventful',
-    headerLeft: null
+    header: null
   };
   constructor(props) {
     super(props);
@@ -26,12 +28,15 @@ class SearchScreen extends React.Component {
   }
   render() {
     return (
+        <Background>
+        <TopBar />
         <View style={styles.container}>
           <Text style={styles.textBig}>
             Search by event type, other keywords, and location coming soon.
           </Text>
           <BottomBarNav navigation={this.props.navigation} />
         </View>
+        </Background>
     );
   }
 }

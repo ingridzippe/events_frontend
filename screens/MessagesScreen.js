@@ -7,6 +7,8 @@ import {
   ListView,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
+import TopBar from '../components/TopBar';
+import Background from '../components/Background';
 import styles from '../styles/styles';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
@@ -17,11 +19,12 @@ const domain = "https://still-citadel-74266.herokuapp.com";
 class MessagesScreen extends React.Component {
   static navigationOptions = {
     title: 'Drip', //you put the title you want to be displayed here
-    headerLeft: null,
-    headerTintColor: "#fff",
-    headerStyle: {
-      backgroundColor: "#000"
-    }
+    // headerLeft: null,
+    // headerTintColor: "#fff",
+    // headerStyle: {
+    //   backgroundColor: "#000"
+    // },
+    header: null
   };
   constructor(props) {
     super(props);
@@ -170,9 +173,13 @@ class MessagesScreen extends React.Component {
   // }
   render() {
     return (
+      <Background>
+      <TopBar />
       <View style={{
         flex: 1,
-        backgroundColor: '#282f37',
+        // dark
+        // backgroundColor: '#282f37',
+        backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
@@ -230,6 +237,7 @@ class MessagesScreen extends React.Component {
         />
         <BottomBarNav navigation={this.props.navigation} />
       </View>
+      </Background>
     );
   }
 }
