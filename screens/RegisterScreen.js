@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 // import BottomBar from '../components/BottomBar'
+import Background from '../components/Background';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
@@ -145,6 +146,7 @@ class RegisterScreen extends React.Component {
   render() {
     const { user } = this.state;
     return (
+      <Background>
       <View style={styles.container}>
         <TouchableOpacity
           style={[styles.button, styles.buttonBlue]}
@@ -157,21 +159,25 @@ class RegisterScreen extends React.Component {
         <Text style={styles.or}>OR</Text>
         <TextInput
           style={styles.input}
+          placeholderTextColor='#fff'
           placeholder='Email'
           onChangeText={(text) => this.setState({ email: text })}
         />
         <TextInput
           style={styles.input}
+          placeholderTextColor='#fff'
           placeholder='Full Name'
           onChangeText={(text) => this.setState({ fullname: text })}
         />
         <TextInput
           style={styles.input}
+          placeholderTextColor='#fff'
           placeholder='Username'
           onChangeText={(text) => this.setState({ username: text })}
         />
         <TextInput
           style={styles.input}
+          placeholderTextColor='#fff'
           placeholder='Password'
           secureTextEntry={true}
           onChangeText={(text) => this.setState({ password: text })}
@@ -183,6 +189,7 @@ class RegisterScreen extends React.Component {
           <Text style={styles.buttonLabel}>Sign up</Text>
         </TouchableOpacity>
       </View>
+      </Background>
     );
   }
 }

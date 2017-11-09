@@ -7,10 +7,12 @@ import {
  TextInput,
  Linking,
  Platform,
+ Image,
 } from 'react-native';
 import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
-
+import TopBar from '../components/TopBar';
+import Background from '../components/Background';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
@@ -101,15 +103,19 @@ class LoginScreen extends React.Component {
  }
  render() {
    return (
+       <Background>
        <View style={styles.container}>
-         <Text style={styles.textBig}>Ventful</Text>
+         <Image source={require('../assets/drip_logo.png')}
+           style={{margin: 26, width: 75, height: 40}}/>
          <TextInput
            style={styles.input}
+           placeholderTextColor='#fff'
            placeholder='Username'
            onChangeText={(text) => this.setState({ username: text })}
          />
          <TextInput
            style={styles.input}
+           placeholderTextColor='#fff'
            placeholder='Password'
            secureTextEntry={true}
            onChangeText={(text) => this.setState({ password: text })}
@@ -132,6 +138,7 @@ class LoginScreen extends React.Component {
            onPress={() => { this.props.navigation.navigate('Register'); }}
          >Don't have an account? Sign up.</Text>
        </View>
+       </Background>
    );
  }
 }
