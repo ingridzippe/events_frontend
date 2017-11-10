@@ -167,7 +167,7 @@ class CreateEventScreen extends React.Component {
             style={[styles.button, styles.buttonBlue]}
             onPress={() => { this.postCreateEvent(); }}
           >
-            <Text style={styles.buttonLabel}>Post Your Event</Text>
+            <Text style={styles.buttonLabel}>Post</Text>
           </TouchableOpacity>
           <BottomBarNav navigation={this.props.navigation} />
         </View>
