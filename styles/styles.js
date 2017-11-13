@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
   },
   eventsContainer: {
     flex: 1,
-    // borderColor: '#000',
-    // borderWidth: 1,
+    borderColor: '#000',
+    borderWidth: 1,
     // backgroundColor: '#fff',
     // dark
     // backgroundColor: '#282f37',
     // transparent
     backgroundColor: 'transparent',
-    alignSelf: 'center'
+    alignSelf: 'stretch'
   },
   smallButton: {
     marginTop: 10,
@@ -91,18 +91,28 @@ const styles = StyleSheet.create({
   },
   event: {
     alignSelf: 'stretch',
-    marginTop: 10,
-    marginBottom: 10,
-    height: 150,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginTop: 20,
+    marginBottom: 27,
+    // height: 300,
+    // borderColor: '#000',
+    // borderWidth: 1,
+    // borderWidth: 1,
+    // borderRadius: 10,
     // borderColor: '#a5c0df',
-    borderColor: '#fff'
+    // borderColor: '#fff'
   },
   user: {
     width: 270,
+    marginTop: 11,
+    marginLeft: 16,
+    fontSize: 16,
+    fontWeight: "bold",
+    color: '#fff'
+  },
+  details: {
+    width: 270,
     marginTop: 6,
-    marginLeft: 20,
+    marginLeft: 75,
     fontSize: 16,
     fontWeight: "bold",
     color: '#fff'
@@ -110,7 +120,7 @@ const styles = StyleSheet.create({
   words: {
     width: 270,
     marginTop: 6,
-    marginLeft: 20,
+    marginLeft: 75,
     fontSize: 16,
     color: '#fff',
     fontFamily: 'Helvetica Neue',

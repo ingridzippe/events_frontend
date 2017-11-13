@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   ListView,
+  Image,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
 import TopBar from '../components/TopBar';
@@ -32,6 +33,7 @@ class MessagesScreen extends React.Component {
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
+    this.formatDate = this.formatDate.bind(this);
     fetch(`${domain}/events`)
     .then((response) => response.json())
     .then((responseJson) => {
@@ -155,6 +157,19 @@ class MessagesScreen extends React.Component {
         });
   }
 
+  formatDate(date) {
+    var monthNames = [
+      "Jan", "Feb", "Mar", "April", "May",
+      "June", "July", "Aug", "Sep", "Oct",
+      "Nov", "Dec"
+    ];
+    date = String(date).split(' ');
+    var days = String(date[0]).split('-');
+    var hours = String(date[1]).split(':');
+    var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
+    return dateArr[2] + ' ' + monthNames[dateArr[1]] + ' ' + dateArr[0];
+  }
+
   // sendLocation = async(user) => {
   //   let { status } = await Permissions.askAsync(Permissions.LOCATION);
   //   if (status !== 'granted') {
@@ -208,14 +223,18 @@ class MessagesScreen extends React.Component {
             <TouchableOpacity style={styles.event}>
               {!rowData.eventLatitude &&
                 <View>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={{borderWidth: 1, borderRadius: 20, height: 40, width: 40}} />
+                <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
+                  <Text style={{borderWidth: 1, borderRadius: 20, borderColor: '#ff4691', height: 40, width: 40}} />
                   <Text style={styles.user}>{rowData.user}</Text>
                 </View>
-                <Text>Image</Text>
-                <Text style={styles.words}>Date: {rowData.eventDate}</Text>
-                <Text style={styles.words}>Place: {rowData.eventLocation}</Text>
-                <Text style={styles.words}>More: {rowData.eventDescription}</Text>
+                <Image
+                  style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
+                  source={{ uri: rowData.eventImage }} />
+                <Text style={styles.details}>
+                    { this.formatDate(rowData.eventDate) }
+                </Text>
+                <Text style={styles.details}>{rowData.eventLocation}</Text>
+                <Text style={styles.words}>{rowData.eventDescription}</Text>
                 </View>}
               {/* {rowData.eventLatitude &&
                 <MapView

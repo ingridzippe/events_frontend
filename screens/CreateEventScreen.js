@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   Modal,
+  ImagePickerIOS,
+  Image,
   Button,
   // DatePickerIOS,
 } from 'react-native';
@@ -48,7 +50,15 @@ class CreateEventScreen extends React.Component {
         date: this.props.date,
         timeZoneOffsetInHours: this.props.timeZoneOffsetInHours,
         modalVisible: false,
+        image: null,
     };
+  }
+  pickImage() {
+    // openSelectDialog(config, successCallback, errorCallback);
+    ImagePickerIOS.openSelectDialog({}, imageUri => {
+      this.setState({ image: imageUri });
+      console.log('this.state.image', this.state.image);
+    }, error => console.error(error));
   }
   setModalVisible(visible) {
     this.setState({modalVisible: true});
@@ -57,12 +67,14 @@ class CreateEventScreen extends React.Component {
     this.setState({modalVisible: false});
   }
   postCreateEvent() {
+  console.log('this.state.image', this.state.image)
   fetch(`${domain}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
+          eventImage: this.state.image,
           eventDate: this.state.eventDate,
           eventLocation: this.state.eventLocation,
           eventDescription: this.state.eventDescription
@@ -70,7 +82,7 @@ class CreateEventScreen extends React.Component {
     })
     .then((response) => {
         console.log('RESPONSE', response);
-        console.log('RESPONSE.JSON', response.json());
+        // console.log('RESPONSE.JSON', response.json());
 
     })
     .then((responseJson) => {
@@ -106,7 +118,7 @@ class CreateEventScreen extends React.Component {
         <Background>
         <TopBar />
         <View style={styles.container}>
-          <Text style={styles.textBig}>Create an event.</Text>
+          {/* <Text style={styles.textBig}>Create an event.</Text> */}
           {/* <TouchableOpacity
             style={[styles.button, styles.buttonBlue]}
             onPress={() => { this.uploadImage(); }}
@@ -145,6 +157,15 @@ class CreateEventScreen extends React.Component {
             <Text style={{ fontSize: 23 }}>Pick a time</Text>
           </TouchableOpacity> */}
 
+          {this.state.image ?
+            <Image
+              style={{ alignSelf: 'stretch', height: 100, marginBottom: 24, marginTop: -53 }}
+              source={{ uri: this.state.image }} /> :
+            <TouchableOpacity
+              style={[styles.button, styles.buttonBlue, {marginTop: -52, marginBottom: 30}]}
+              onPress={() => { this.pickImage(); }} >
+              <Text style={styles.buttonLabel}>Pick Image</Text>
+            </TouchableOpacity> }
           <TextInput
             style={styles.input}
             placeholderTextColor='#fff'
