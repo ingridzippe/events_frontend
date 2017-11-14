@@ -225,7 +225,7 @@ class MessagesScreen extends React.Component {
                 <View>
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
                   <Text style={{borderWidth: 1, borderRadius: 20, borderColor: '#ff4691', height: 40, width: 40}} />
-                  <Text style={styles.user}>{rowData.user}</Text>
+                  <Text style={styles.user}>{rowData.userDetails.username}</Text>
                 </View>
                 <Image
                   style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
