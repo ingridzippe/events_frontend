@@ -85,7 +85,9 @@ class MyProfileScreen extends React.Component {
                       fontFamily: 'AvenirNext-Regular',
                       borderRadius: 7,
                       borderColor: '#A9A9A9',
-                    }}>Edit Profile</Text>
+                    }}
+                    onPress={() => { this.props.navigation.navigate('EditMyProfile'); }}
+                    >Edit Profile</Text>
                   </TouchableOpacity>
                   <TouchableOpacity >
                     <Icon

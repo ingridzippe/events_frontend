@@ -10,6 +10,7 @@ import CreateEventScreen from './screens/CreateEventScreen';
 import SearchScreen from './screens/SearchScreen';
 import UpdateScreen from './screens/UpdateScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
+import EditMyProfileScreen from './screens/EditMyProfileScreen';
 
 // const domain = "https://something-horizons.herokuapp.com";
 //const domain = "https://hohoho-backend.herokuapp.com"; // Old Server
@@ -49,6 +50,9 @@ export default StackNavigator({
   },
   MyProfile: {
     screen: MyProfileScreen,
+  },
+  EditMyProfile: {
+    screen: EditMyProfileScreen,
   },
 }, {
   initialRouteName: 'Messages',

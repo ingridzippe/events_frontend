@@ -90,6 +90,7 @@ class RegisterScreen extends React.Component {
           fullname: this.state.fullname,
           username: this.state.username,
           password: this.state.password,
+          image: '../assets/generic_user.png',
         })
       })
       .then((response) => {

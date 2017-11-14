@@ -224,7 +224,9 @@ class MessagesScreen extends React.Component {
               {!rowData.eventLatitude &&
                 <View>
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
-                  <Text style={{borderWidth: 1, borderRadius: 20, borderColor: '#ff4691', height: 40, width: 40}} />
+                  { console.log('rowdata.image', rowData.userDetails.image) }
+                  <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
+                         style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#ff4691'}}/>
                   <Text style={styles.user}>{rowData.userDetails.username}</Text>
                 </View>
                 <Image

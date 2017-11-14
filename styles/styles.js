@@ -89,6 +89,15 @@ const styles = StyleSheet.create({
     // borderColor: '#a5c0df',
     borderWidth: 1
   },
+  profileinput: {
+    alignSelf: 'stretch',
+    paddingTop: 17,
+    paddingBottom: 17,
+    color: '#fff',
+    borderColor: '#fff',
+    // borderColor: '#a5c0df',
+    borderBottomWidth: 1
+  },
   event: {
     alignSelf: 'stretch',
     marginTop: 20,
@@ -194,6 +203,16 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderRadius: 1,
     // borderColor: '#a5c0df',
+  },
+  done: {
+    position: 'absolute',
+    top: -34,
+    right: 20,
+  },
+  cancel: {
+    position: 'absolute',
+    top: -34,
+    left: 20,
   },
   bottombaritem: {
     paddingTop: 14.5,
