@@ -9,3 +9,5 @@ Things That Are Working:
   - if the user is logged in it goes straight to posts (11-6-17)
   - in testflight (aaye) (11-8-17)
   - dark theme design (11-9-17)
+  - images load on posts screen (11-13-17)
+  - date correctly parsed on posts screen
