@@ -90,7 +90,9 @@ class LoginScreen extends React.Component {
    .then((response) => response.json())
    .then((responseJson) => {
      if (responseJson.success) {
-       AsyncStorage.setItem('dripuser', JSON.stringify(responseJson.user));
+       if (responseJson.user) {
+         AsyncStorage.setItem('dripuser', JSON.stringify(responseJson.user));
+       }
        this.props.navigation.navigate('Messages');
      } else {
        alert('Invalid credentials bruh');
@@ -127,12 +129,12 @@ class LoginScreen extends React.Component {
            <Text style={styles.buttonLabel}>Login</Text>
          </TouchableOpacity>
          <Text style={styles.or}>OR</Text>
-         <TouchableOpacity style={[styles.button, styles.buttonBlue]}>
+         {/* <TouchableOpacity style={[styles.button, styles.buttonBlue]}>
            <Text
              style={styles.buttonLabel}
              onPress={() => { this.loginWithFacebook(); }}
            >Log in with Facebook</Text>
-         </TouchableOpacity>
+         </TouchableOpacity> */}
          <Text
            style={styles.or}
            onPress={() => { this.props.navigation.navigate('Register'); }}

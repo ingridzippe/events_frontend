@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ListView,
+  Image
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
 import TopBar from '../components/TopBar';
@@ -45,21 +46,28 @@ class MyProfileScreen extends React.Component {
       console.log('it errored MMMMM');
     });
   }
+  formatDate(date) {
+    var monthNames = [
+      "Jan", "Feb", "Mar", "April", "May",
+      "June", "July", "Aug", "Sep", "Oct",
+      "Nov", "Dec"
+    ];
+    date = String(date).split(' ');
+    var days = String(date[0]).split('-');
+    var hours = String(date[1]).split(':');
+    var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
+    return dateArr[2] + ' ' + monthNames[dateArr[1]] + ' ' + dateArr[0];
+  }
   render() {
     return (
       <Background>
       <TopBar />
       <View style={{ flex: 1, backgroundColor: 'transparent' }}>
         <View style={{ flexDirection: 'row' }}>
-          <View style={{
-            borderWidth: 0.5,
-            borderRadius: 50,
-            borderColor: '#696969',
-            width: 75,
-            height: 75,
-          }}></View>
+          <Image source={require('../assets/generic_user.png')}
+                 style={{marginLeft: 30, marginTop: 10, width: 76, height: 76, borderWidth: 1, borderRadius: 38, borderColor: '#f7f7f7'}}/>
           <View style={{ height: 120, flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
-              <View style={{flex: 1, flexDirection: 'column', width: 200}}>
+              {/* <View style={{flex: 1, flexDirection: 'column', width: 200}}>
                   <View style={{ flex: 1, width: 200, flexDirection: 'row', justifyContent: 'space-between' }}>
                       <Text>1,000</Text>
                       <Text>380</Text>
@@ -70,10 +78,12 @@ class MyProfileScreen extends React.Component {
                       <Text>followers</Text>
                       <Text>following</Text>
                   </View>
-              </View>
+              </View> */}
               <View style={{ flex: 1, width: 200, flexDirection: 'row', justifyContent: 'space-between' }}>
                   <TouchableOpacity>
                     <Text style={{
+                      marginTop: 35,
+                      marginLeft: 30,
                       textAlign: 'center',
                       overflow: 'hidden',
                       backgroundColor: '#fff',
@@ -89,50 +99,50 @@ class MyProfileScreen extends React.Component {
                     onPress={() => { this.props.navigation.navigate('EditMyProfile'); }}
                     >Edit Profile</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity >
+                  {/* <TouchableOpacity >
                     <Icon
                       name='cog'
                       style={{ marginTop: 5, marginLeft: 3, fontSize: 30, color: '#808080' }} />
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
               </View>
           </View>
         </View>
-        {/* <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => */}
-          {/* }
-        /> */}
-        <ListView
-          style={styles.eventsContainer}
-          showsVerticalScrollIndicator={false}
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) =>
-            <TouchableOpacity style={styles.event}>
-              {!rowData.eventLatitude &&
-                <View>
-                <Text style={styles.words}>When: {rowData.eventDate}</Text>
-                <Text style={styles.words}>Where: {rowData.eventLocation}</Text>
-                <Text style={styles.words}>What: {rowData.eventDescription}</Text>
-                </View>}
-              {/* {rowData.eventLatitude &&
-                <MapView
-                  style={{ flex: 7}}
-                  region={{ latitude: 37.77182221974024,
-                           longitude: -122.409295264717,
-                           latitudeDelta: 0.1,
-                           longitudeDelta: 0.05 }}
-              />} */}
-              {/* {rowData.eventLatitude &&
-                <MapView style={{flex: 7}}
-                    region={{ latitude: 37.77182221974024,
-                             longitude: -122.409295264717,
-                             latitudeDelta: 0.1,
-                             longitudeDelta: 0.05 }}
-                />} */}
-            </TouchableOpacity>
-          }
-        />
-        <BottomBarNav navigation={this.props.navigation} />
+          <View style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <ListView
+              style={styles.eventsContainer}
+              showsVerticalScrollIndicator={false}
+              dataSource={this.state.dataSource}
+              renderRow={(rowData) =>
+                <TouchableOpacity style={styles.event}>
+                  {!rowData.eventLatitude &&
+                    <View>
+                    <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
+                      { console.log('rowdata.image', rowData.userDetails.image) }
+                      <Image source={ require('../assets/generic_user.png') }
+                             style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
+                      {/* <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
+                             style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/> */}
+                      <Text style={styles.user}>{rowData.userDetails.username}</Text>
+                    </View>
+                    <Image
+                      style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
+                      source={{ uri: rowData.eventImage }} />
+                    <Text style={styles.details}>
+                        { this.formatDate(rowData.eventDate) }
+                    </Text>
+                    <Text style={styles.details}>{rowData.eventLocation}</Text>
+                    <Text style={styles.words}>{rowData.eventDescription}</Text>
+                    </View>}
+                </TouchableOpacity>
+            }
+          />
+         </View>
+         <BottomBarNav navigation={this.props.navigation} />
       </View>
       </Background>
     );

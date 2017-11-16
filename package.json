@@ -9,6 +9,7 @@
 	"dependencies": {
 		"react": "16.0.0-beta.5",
 		"react-native": "0.49.5",
+		"react-native-aws3": "0.0.8",
 		"react-native-camera-roll": "0.0.29",
 		"react-native-safari-view": "^2.1.0",
 		"react-native-vector-icons": "^4.4.2",

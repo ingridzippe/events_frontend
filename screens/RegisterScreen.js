@@ -149,15 +149,15 @@ class RegisterScreen extends React.Component {
     return (
       <Background>
       <View style={styles.container}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[styles.button, styles.buttonBlue]}
         >
           <Text
             style={styles.buttonLabel}
             onPress={() => { this.loginWithFacebook(); }}
           >Log in with Facebook</Text>
-        </TouchableOpacity>
-        <Text style={styles.or}>OR</Text>
+        </TouchableOpacity> */}
+        {/* <Text style={styles.or}>OR</Text> */}
         <TextInput
           style={styles.input}
           placeholderTextColor='#fff'

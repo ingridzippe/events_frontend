@@ -1,2 +1,2 @@
-dependencies: /Users/wyndolbar/Documents/APP/events/ios/events/main.m \
-  /Users/wyndolbar/Documents/APP/events/ios/events/AppDelegate.h
+dependencies: /Users/wyndolbar/Documents/AAAPPP/events/ios/events/main.m \
+  /Users/wyndolbar/Documents/AAAPPP/events/ios/events/AppDelegate.h

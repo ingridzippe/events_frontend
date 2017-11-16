@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   },
   eventsContainer: {
     flex: 1,
-    borderColor: '#000',
-    borderWidth: 1,
+    // borderColor: '#000',
+    // borderWidth: 1,
     // backgroundColor: '#fff',
     // dark
     // backgroundColor: '#282f37',

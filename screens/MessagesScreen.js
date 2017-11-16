@@ -225,13 +225,15 @@ class MessagesScreen extends React.Component {
                 <View>
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
                   { console.log('rowdata.image', rowData.userDetails.image) }
-                  <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
-                         style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#ff4691'}}/>
+                  <Image source={ require('../assets/generic_user.png') }
+                         style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
+                  {/* <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
+                         style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/> */}
                   <Text style={styles.user}>{rowData.userDetails.username}</Text>
                 </View>
                 <Image
                   style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
-                  source={{ uri: rowData.eventImage }} />
+                  source={ rowData.eventImage ? { uri: rowData.eventImage } : require('../assets/drip_logo.png') } />
                 <Text style={styles.details}>
                     { this.formatDate(rowData.eventDate) }
                 </Text>
