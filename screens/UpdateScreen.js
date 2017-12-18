@@ -13,7 +13,8 @@ import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
 
-const domain = "https://still-citadel-74266.herokuapp.com";
+// const domain = "https://still-citadel-74266.herokuapp.com";
+const domain = process.env.BACKEND;
 
 class UpdateScreen extends React.Component {
   static navigationOptions = {

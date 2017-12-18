@@ -8,6 +8,7 @@ import RegisterScreen from './screens/RegisterScreen';
 // import UsersScreen from './screens/UsersScreen';
 import CreateEventScreen from './screens/CreateEventScreen';
 import SearchScreen from './screens/SearchScreen';
+import PeopleScreen from './screens/PeopleScreen';
 import UpdateScreen from './screens/UpdateScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
 import EditMyProfileScreen from './screens/EditMyProfileScreen';
@@ -42,6 +43,9 @@ export default StackNavigator({
   Search: {
     screen: SearchScreen,
   },
+  People: {
+    screen: PeopleScreen,
+  },
   Update: {
     screen: UpdateScreen,
   },
@@ -55,6 +59,6 @@ export default StackNavigator({
     screen: EditMyProfileScreen,
   },
 }, {
-  initialRouteName: 'Messages',
+  initialRouteName: 'Login',
   headerMode: 'screen'
 });

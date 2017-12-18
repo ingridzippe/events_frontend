@@ -34,14 +34,24 @@ const styles = StyleSheet.create({
   },
   eventsContainer: {
     flex: 1,
-    // borderColor: '#000',
-    // borderWidth: 1,
     // backgroundColor: '#fff',
     // dark
     // backgroundColor: '#282f37',
     // transparent
     backgroundColor: 'transparent',
     alignSelf: 'stretch'
+  },
+  peopleContainer: {
+    flex: 1,
+    // backgroundColor: '#fff',
+    // dark
+    // backgroundColor: '#282f37',
+    // transparent
+    backgroundColor: 'transparent',
+    alignSelf: 'stretch',
+    borderWidth: 1,
+    borderColor: '#fff',
+    height: 500
   },
   smallButton: {
     marginTop: 10,
@@ -118,19 +128,29 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: '#fff'
   },
-  details: {
-    width: 270,
-    marginTop: 6,
-    marginLeft: 75,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: '#fff'
-  },
   words: {
     width: 270,
     marginTop: 6,
     marginLeft: 75,
     fontSize: 16,
+    color: '#fff',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: '300'
+  },
+  profilewords: {
+    width: 270,
+    marginTop: 10,
+    marginLeft: 35,
+    fontSize: 15.5,
+    color: '#fff',
+    fontFamily: 'Helvetica Neue',
+    fontWeight: '300'
+  },
+  lessthan: {
+    width: 270,
+    marginTop: 10,
+    marginLeft: 17,
+    fontSize: 15.5,
     color: '#fff',
     fontFamily: 'Helvetica Neue',
     fontWeight: '300'

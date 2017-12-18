@@ -13,10 +13,12 @@ import Background from '../components/Background';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
+import { connect } from 'react-redux';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
 // const domain = 'https://something-horizons.herokuapp.com';
-const domain = "https://still-citadel-74266.herokuapp.com";
+// const domain = "https://still-citadel-74266.herokuapp.com";
+const domain = process.env.BACKEND;
 
 class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -80,7 +82,8 @@ class RegisterScreen extends React.Component {
 
   postLogin() {
     console.log('signup clicked');
-    return fetch(`${domain}/register`, {
+    // return fetch(`${domain}/register`, {
+    return fetch(`http://localhost:3000/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -149,19 +152,22 @@ class RegisterScreen extends React.Component {
     return (
       <Background>
       <View style={styles.container}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[styles.button, styles.buttonBlue]}
         >
           <Text
             style={styles.buttonLabel}
-            onPress={() => { this.loginWithFacebook(); }}
-          >Log in with Facebook</Text>
-        </TouchableOpacity> */}
-        {/* <Text style={styles.or}>OR</Text> */}
+            onPress={() => { this.loginWithFacebook(); }}>
+            Log in with Facebook
+          </Text>
+        </TouchableOpacity>
+        <Text style={styles.or}>ORRRRR</Text>
+        {/* <Text>Email: {this.props.email}</Text> */}
         <TextInput
           style={styles.input}
           placeholderTextColor='#fff'
           placeholder='Email'
+          // onChangeText={(text) => this.props.updateEmail(text)}
           onChangeText={(text) => this.setState({ email: text })}
         />
         <TextInput
@@ -194,5 +200,24 @@ class RegisterScreen extends React.Component {
     );
   }
 }
+
+// const mapStateToProps = (state) => {
+//   return {
+//     usercount: state,
+//     email: state.email
+//   }
+// }
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     incrementUserCount: () => {
+//       dispatch(addTodo(id, task));
+//     },
+//     updateEmail: (text) => {
+//       dispatch({type: 'UPDATE_EMAIL', text: text})
+//     }
+//   }
+// }
+
+// RegisterScreen = connect(mapStateToProps, mapDispatchToProps)(RegisterScreen)
 
 export default RegisterScreen;

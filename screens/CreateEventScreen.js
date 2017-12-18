@@ -19,7 +19,8 @@ import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
 
 // const domain = "https://something-horizons.herokuapp.com";
-const domain = 'https://still-citadel-74266.herokuapp.com';
+// const domain = 'https://still-citadel-74266.herokuapp.com';
+const domain = process.env.BACKEND;
 import { RNS3 } from 'react-native-aws3';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
@@ -124,20 +125,21 @@ class CreateEventScreen extends React.Component {
     this.setState({modalVisible: false});
   }
   postCreateEvent() {
-  fetch(`${domain}/create`, {
+  fetch(`http://localhost:3000/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          eventImage: this.state.eventImage,
-          eventDate: this.state.eventDate,
-          eventLocation: this.state.eventLocation,
-          eventDescription: this.state.eventDescription
+          eventimage: this.state.eventImage,
+          eventdate: this.state.eventDate,
+          eventlocation: this.state.eventLocation,
+          eventdescription: this.state.eventDescription
       })
     })
     .then((response) => {
         console.log('RESPONSE', response);
+        return response.json();
         // console.log('RESPONSE.JSON', response.json());
 
     })

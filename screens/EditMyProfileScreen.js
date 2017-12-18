@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  AsyncStorage,
   View,
   Text,
   TouchableOpacity,
@@ -13,9 +14,11 @@ import {
 import TopBar from '../components/TopBar';
 import Background from '../components/Background';
 import styles from '../styles/styles';
+import { RNS3 } from 'react-native-aws3';
 
 // const domain = "https://something-horizons.herokuapp.com";
-const domain = 'https://still-citadel-74266.herokuapp.com';
+// const domain = 'https://still-citadel-74266.herokuapp.com';
+const domain = 'http://localhost:3000';
 
 class EditMyProfileScreen extends React.Component {
   static navigationOptions = {
@@ -25,7 +28,7 @@ class EditMyProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: '',
+      profileImage: null,
       fullname: '',
       username: '',
       website: '',
@@ -37,31 +40,61 @@ class EditMyProfileScreen extends React.Component {
   }
   componentDidMount() {
     fetch(`${domain}/getmyprofile`)
-    .then((response) => response.json())
+    .then((response) => {
+      // console.log('az', response.json());
+      return response.json();
+    })
     .then((resjson) => {
       console.log('responseJson', resjson);
-      if (resjson.success === true) {
-          console.log('indexing correctly?', resjson.user[0]);
-          var u = resjson.user[0];
-          this.setState({
-            image: u.image,
-            fullname: u.fullname,
-            username: u.username,
-            website: u.website,
-            bio: u.bio,
-            email: u.email,
-            phone: u.phone,
-            gender: u.gender,
-          })
-          console.log('RESPONSE JSON my profile', resjson);
-       } else { alert('invalid') }
+      // if (resjson.success === true) {
+      // console.log('indexing correctly?', resjson.user[0]);
+        var u = resjson.user;
+        this.setState({
+          profileImage: u.image,
+          fullname: u.fullname,
+          username: u.username,
+          website: u.website,
+          bio: u.bio,
+          email: u.email,
+          phone: u.phone,
+          gender: u.gender,
+        })
+        console.log('RESPONSE JSON my profile', resjson);
+       // } else { alert('invalid') }
     })
     .catch((err) => { console.log('err'); });
   }
+  getSignedRequest(uri){
+    var fileName;
+    const storedUser = AsyncStorage.getItem('dripuser');
+    if (storedUser !== null){
+      var now = new Date();
+      fileName = `avataruser${storedUser}date${now}`
+    }
+    const file = {
+        uri: uri,
+        name: fileName,
+        type: "image/png"
+    }
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "ingridzippe-events",
+      region: "us-east-1",
+      accessKey: "AKIAJF47MJIHMZNLEMUA",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+    RNS3.put(file, options).then(response => {
+      if (response.status !== 201)
+        throw new Error("Failed to upload image to S3");
+      console.log("RESPONSE.BODY.POSTRESP.LOC", response.body.postResponse.location);
+      this.setState({ profileImage: response.body.postResponse.location });
+    });
+  }
   pickImage() {
     ImagePickerIOS.openSelectDialog({}, imageUri => {
-      this.setState({ image: imageUri });
-      console.log('this.state.image', this.state.image);
+      this.setState({ profileImage: imageUri });
+      console.log('this.state.profileImage', this.state.profileImage);
     }, error => console.error(error));
   }
   setModalVisible(visible) {
@@ -78,7 +111,7 @@ class EditMyProfileScreen extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        image: this.state.image,
+        image: this.state.profileImage,
         fullname: this.state.fullname,
         username: this.state.username,
         website: this.state.website,
@@ -91,6 +124,7 @@ class EditMyProfileScreen extends React.Component {
     .then((response) => {
       if (response) { console.log('response true') }
       else { console.log('error'); }
+      return response.json();
     })
     .then((responseJson) => {
       this.props.navigation.navigate('MyProfile');
@@ -103,6 +137,40 @@ class EditMyProfileScreen extends React.Component {
       }
     })
     .catch((err) => { console.log('it errored', err); });
+  }
+  getSignedRequest(uri){
+    var fileName;
+    const storedUser = AsyncStorage.getItem('dripuser');
+    if (storedUser !== null){
+      var now = new Date();
+      fileName = `user${storedUser}date${now}`
+    }
+    const file = {
+        uri: uri,
+        name: fileName,
+        type: "image/png"
+    }
+    const options = {
+      keyPrefix: "uploads/",
+      bucket: "ingridzippe-events",
+      region: "us-east-1",
+      accessKey: "AKIAJF47MJIHMZNLEMUA",
+      secretKey: "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",
+      successActionStatus: 201
+    }
+    RNS3.put(file, options).then(response => {
+      if (response.status !== 201)
+        throw new Error("Failed to upload image to S3");
+      console.log("RESPONSE.BODY.POSTRESP.LOC", response.body.postResponse.location);
+      this.setState({ profileImage: response.body.postResponse.location });
+    });
+  }
+  pickImage() {
+    ImagePickerIOS.openSelectDialog({}, imageUri => {
+      console.log('imageUri', imageUri);
+      this.getSignedRequest(imageUri);
+      this.setState({ profileImage: imageUri });
+    }, error => console.error(error));
   }
   render() {
     return (
@@ -124,7 +192,7 @@ class EditMyProfileScreen extends React.Component {
             onPress={() => { this.pickImage(); }} >
             <Image
               style={{ width: 90, height: 90, borderColor: '#fff', borderWidth: 1, borderRadius: 45 }}
-              source={this.state.image ? { uri: this.state.image } : require('../assets/generic_user.png') } />
+              source={this.state.profileImage ? { uri: this.state.profileImage } : require('../assets/generic_user.png') } />
             <Text style={{fontSize: 14, color: '#fff', marginTop: 10}}>
               Change Profile Photo
             </Text>

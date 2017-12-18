@@ -11,11 +11,15 @@ import BottomBarNav from '../components/BottomBarNav';
 import TopBar from '../components/TopBar';
 import Background from '../components/Background';
 import styles from '../styles/styles';
+import Icon from 'react-native-vector-icons/FontAwesome';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
 // const domain = 'https://something-horizons.herokuapp.com';
-const domain = "https://still-citadel-74266.herokuapp.com";
+// const domain = "https://still-citadel-74266.herokuapp.com";
+const domain = process.env.BACKEND;
+
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 class MessagesScreen extends React.Component {
   static navigationOptions = {
@@ -29,27 +33,12 @@ class MessagesScreen extends React.Component {
   };
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds.cloneWithRows([])
     };
     this.formatDate = this.formatDate.bind(this);
-    fetch(`${domain}/events`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log('responseJson', responseJson);
-        if (responseJson.success === true) {
-            console.log('RESPONSE JSON MESSAAGES', responseJson);
-            this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
-         } else {
-            alert('invalid')
-         }
-         console.log(responseJson);
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log('it errored MMMMM');
-    });
+    this.formatMonth = this.formatMonth.bind(this);
+    this.formatDay = this.formatDay.bind(this);
   }
   componentDidMount() {
     // if there is a user in phone storage, go to posts
@@ -62,6 +51,26 @@ class MessagesScreen extends React.Component {
           this.props.navigation.navigate('Login')
         }
       })
+
+  fetch(`http://localhost:3000/events`)
+  .then((response) => {
+    console.log('response 1', response)
+    return response.json();
+  })
+  .then((responseJson) => {
+      console.log('responseJson', responseJson);
+      if (responseJson.success === true) {
+          console.log('RESPONSE JSON MESSAAGES', responseJson);
+          this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
+       } else {
+          alert('invalid')
+       }
+       console.log(responseJson);
+  })
+  .catch((err) => {
+    console.log(err);
+    console.log('could not get events');
+  });
   }
   // componentDidMount() {
   //   this.props.navigation.setParams({
@@ -72,7 +81,7 @@ class MessagesScreen extends React.Component {
   //
   postCreateEvent() {
   console.log('creating event');
-  return fetch(`${domain}/create`, {
+  return fetch(`http://localhost:3000/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -133,7 +142,7 @@ class MessagesScreen extends React.Component {
   //     });
   // }
   longTouchUser(lat, long) {
-      return fetch(`${domain}/create`, {
+      return fetch(`http://localhost:3000/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -168,6 +177,25 @@ class MessagesScreen extends React.Component {
     var hours = String(date[1]).split(':');
     var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
     return dateArr[2] + ' ' + monthNames[dateArr[1]] + ' ' + dateArr[0];
+  }
+  formatMonth(date) {
+    var monthNames = [
+      "JAN", "FEB", "MAR", "APRIL", "MAY",
+      "JUN", "JUL", "AUG", "SEP", "OCT",
+      "NOV", "DEC"
+    ];
+    date = String(date).split(' ');
+    var days = String(date[0]).split('-');
+    var hours = String(date[1]).split(':');
+    var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
+    return monthNames[dateArr[1]];
+  }
+  formatDay(date) {
+    date = String(date).split(' ');
+    var days = String(date[0]).split('-');
+    var hours = String(date[1]).split(':');
+    var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
+    return dateArr[2];
   }
 
   // sendLocation = async(user) => {
@@ -224,21 +252,41 @@ class MessagesScreen extends React.Component {
               {!rowData.eventLatitude &&
                 <View>
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
-                  { console.log('rowdata.image', rowData.userDetails.image) }
-                  <Image source={ require('../assets/generic_user.png') }
+                  <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic_user.png') }
                          style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
-                  {/* <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
-                         style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/> */}
-                  <Text style={styles.user}>{rowData.userDetails.username}</Text>
+                  <Text style={styles.user}>{rowData.user.username}</Text>
                 </View>
                 <Image
                   style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
-                  source={ rowData.eventImage ? { uri: rowData.eventImage } : require('../assets/drip_logo.png') } />
-                <Text style={styles.details}>
-                    { this.formatDate(rowData.eventDate) }
-                </Text>
-                <Text style={styles.details}>{rowData.eventLocation}</Text>
-                <Text style={styles.words}>{rowData.eventDescription}</Text>
+                  source={ rowData.eventimage ? { uri: rowData.eventimage } : require('../assets/drip_logo.png') } />
+                <View style={{flex: 1, marginTop: 2, marginBottom: 9, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <TouchableOpacity style={[styles.bottombaritem]}>
+                      <Icon name='hand-peace-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                    {/* <TouchableOpacity style={[styles.bottombaritem]}>
+                      <Icon name='comment-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity> */}
+                    <TouchableOpacity style={[styles.bottombaritem]}>
+                      <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.bottombaritem]}>
+                      <Icon name='paper-plane-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
+                    <View style={{ marginLeft: 75 }}>
+                        <View style={{flex: 1, flexDirection: 'row', width: 40}}>
+                          <Text style={{color: '#fff', fontSize: 16}}>
+                            { this.formatMonth(rowData.eventdate) }
+                          </Text>
+                          <Text style={{color: '#fff', fontSize: 16, marginLeft: 4, fontWeight: "bold"}}>
+                            { this.formatDay(rowData.eventdate) }
+                          </Text>
+                        </View>
+                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventdescription}</Text>
+                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventlocation}</Text>
+                    </View>
+                </View>
                 </View>}
               {/* {rowData.eventLatitude &&
                 <MapView

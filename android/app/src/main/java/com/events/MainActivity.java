@@ -1,6 +1,8 @@
 package com.events;
 
 import com.facebook.react.ReactActivity;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.dylanvann.cameraroll.CameraRollPackage;
 
 public class MainActivity extends ReactActivity {
 

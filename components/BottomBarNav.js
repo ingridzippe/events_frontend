@@ -19,40 +19,36 @@ class BottomBarNav extends React.Component {
             style={[styles.bottombaritem]}
             onPress={() => { this.props.navigation.navigate('Messages'); }}
           >
-            <Icon name='home' style={{ fontSize: 30,
-                // color: '#333333',
+            <Icon name='home' style={{ fontSize: 24,
                 color: '#fff' }} />
           </TouchableOpacity>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={[styles.bottombaritem]}
-            onPress={() => { console.log('in to', this.props.navigation.navigate('Search')) }}
+            onPress={() => { console.log('in to', this.props.navigation.navigate('People')) }}
           >
-            <Icon name='search' style={{ fontSize: 22, marginTop: 4,
-                // color: '#333333',
+            <Icon name='smile-o' style={{ fontSize: 24, marginTop: 0,
                 color: '#fff' }} />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.bottombaritem]}
             onPress={() => { this.props.navigation.navigate('Create'); }}
           >
-            <Icon name='plus-square-o' style={{ fontSize: 30, marginTop: 1,
+            <Icon name='plus-square-o' style={{ fontSize: 24, marginTop: 1,
                 // color: '#333333',
                 color: '#fff' }} />
           </TouchableOpacity>
-          {/* <TouchableOpacity
+          <TouchableOpacity
             style={[styles.bottombaritem]}
             onPress={() => { this.props.navigation.navigate('Update'); }}
           >
-            <Icon name='heart-o' style={{ fontSize: 25, marginTop: 2,
-                // color: '#333333',
+            <Icon name='heart-o' style={{ fontSize: 21, marginTop: 3,
                 color: '#fff' }} />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <TouchableOpacity
             style={[styles.bottombaritem]}
             onPress={() => { this.props.navigation.navigate('MyProfile'); }}
           >
-            <Icon name='user-o' style={{ fontSize: 24, marginTop: 3,
-                // color: '#333333',
+            <Icon name='user-o' style={{ fontSize: 20, marginTop: 3,
                 color: '#fff' }} />
           </TouchableOpacity>
         </View>
