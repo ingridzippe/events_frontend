@@ -11,7 +11,7 @@ import {
   Button,
   ListView,
 } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import styles from '../styles/styles';
 import { RNS3 } from 'react-native-aws3';
@@ -175,7 +175,7 @@ class EditMyProfileScreen extends React.Component {
   render() {
     return (
         <Background>
-        <TopBar />
+        <TopBarNav navigation={this.props.navigation} />
         <View style={styles.container}>
           <TouchableOpacity
             style={styles.cancel}

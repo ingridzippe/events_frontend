@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import styles from '../styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,7 +34,9 @@ class MessagesScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      dataSource: ds.cloneWithRows([]),
+      latitude: 0,
+      longitude: 0,
     };
     this.formatDate = this.formatDate.bind(this);
     this.formatMonth = this.formatMonth.bind(this);
@@ -52,26 +54,50 @@ class MessagesScreen extends React.Component {
         }
       })
 
-  fetch(`http://localhost:3000/events`)
-  .then((response) => {
-    console.log('response 1', response)
-    return response.json();
-  })
-  .then((responseJson) => {
-      console.log('responseJson', responseJson);
-      if (responseJson.success === true) {
-          console.log('RESPONSE JSON MESSAAGES', responseJson);
-          this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
-       } else {
-          alert('invalid')
-       }
-       console.log(responseJson);
-  })
-  .catch((err) => {
-    console.log(err);
-    console.log('could not get events');
-  });
+  // LOADS EVENTS
+  // fetch(`http://localhost:3000/events`)
+  // .then((response) => {
+  //   console.log('response 1', response)
+  //   return response.json();
+  // })
+  // .then((responseJson) => {
+  //     console.log('responseJson', responseJson);
+  //     if (responseJson.success === true) {
+  //         console.log('RESPONSE JSON MESSAAGES', responseJson);
+  //         this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
+  //      } else {
+  //         alert('invalid')
+  //      }
+  //      console.log(responseJson);
+  // })
+  // .catch((err) => {
+  //   console.log(err);
+  //   console.log('could not get events');
+  // });
+  // }
+
+    fetch(`http://localhost:3000/reactions`)
+    .then((response) => {
+      console.log('response 1', response)
+      return response.json();
+    })
+    .then((responseJson) => {
+        console.log('responseJson', responseJson);
+        if (responseJson.success === true) {
+            console.log('RESPONSE JSON MESSAAGES', responseJson);
+            this.setState({ dataSource: ds.cloneWithRows(responseJson.reactions) });
+         } else {
+            alert('invalid')
+         }
+         console.log(responseJson);
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log('could not get events');
+    });
+
   }
+
   // componentDidMount() {
   //   this.props.navigation.setParams({
   //     onRightPress: yourHandlerFunctionGoesHere
@@ -197,6 +223,52 @@ class MessagesScreen extends React.Component {
     var dateArr = [parseInt(days[0]), parseInt(days[1])-1, parseInt(days[2]), parseInt(hours[0]), parseInt(hours[1]), parseInt(hours[2])];
     return dateArr[2];
   }
+  postGoingReaction(eventid) {
+  fetch(`http://localhost:3000/createreaction`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          eventid: eventid,
+          type: 'going',
+      })
+    })
+    .then((response) => {
+        console.log('RESPONSE', response);
+        return response.json();
+    })
+    .then((responseJson) => {
+      console.log('responseJson', responseJson);
+      if (responseJson.success === true) {
+        console.log('reaction', responseJson.reaction);
+      } else { console.log('reaction did not save') }
+    })
+    .catch((err) => { console.log('it errored', err); });
+  }
+  postLikeReaction(eventid) {
+  fetch(`http://localhost:3000/createreaction`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          eventid: eventid,
+          type: 'like',
+      })
+    })
+    .then((response) => {
+        console.log('RESPONSE', response);
+        return response.json();
+    })
+    .then((responseJson) => {
+      console.log('responseJson', responseJson);
+      if (responseJson.success === true) {
+        console.log('reaction', responseJson.reaction);
+      } else { console.log('reaction did not save') }
+    })
+    .catch((err) => { console.log('it errored', err); });
+  }
 
   // sendLocation = async(user) => {
   //   let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -217,7 +289,7 @@ class MessagesScreen extends React.Component {
   render() {
     return (
       <Background>
-      <TopBar />
+      <TopBarNav navigation={this.props.navigation} />
       <View style={{
         flex: 1,
         // dark
@@ -254,19 +326,22 @@ class MessagesScreen extends React.Component {
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
                   <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic_user.png') }
                          style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
-                  <Text style={styles.user}>{rowData.user.username}</Text>
+                  <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <Text style={styles.user}>{rowData.user.username}</Text>
+                      <Text style={{fontSize: 16, marginLeft: 8, marginTop: 11.8, alignItems: 'flex-start', color: '#fff' }}>{rowData.type==='like' ? 'likes' : 'is going to'}</Text>
+                  </View>
                 </View>
                 <Image
                   style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
-                  source={ rowData.eventimage ? { uri: rowData.eventimage } : require('../assets/drip_logo.png') } />
+                  source={ rowData.event.eventimage ? { uri: rowData.event.eventimage } : require('../assets/drip_logo.png') } />
                 <View style={{flex: 1, marginTop: 2, marginBottom: 9, flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <TouchableOpacity style={[styles.bottombaritem]}>
+                    <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postGoingReaction(rowData.event.id); }} >
                       <Icon name='hand-peace-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
                     </TouchableOpacity>
                     {/* <TouchableOpacity style={[styles.bottombaritem]}>
                       <Icon name='comment-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
                     </TouchableOpacity> */}
-                    <TouchableOpacity style={[styles.bottombaritem]}>
+                    <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postLikeReaction(rowData.event.id); }} >
                       <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.bottombaritem]}>
@@ -277,14 +352,14 @@ class MessagesScreen extends React.Component {
                     <View style={{ marginLeft: 75 }}>
                         <View style={{flex: 1, flexDirection: 'row', width: 40}}>
                           <Text style={{color: '#fff', fontSize: 16}}>
-                            { this.formatMonth(rowData.eventdate) }
+                            { this.formatMonth(rowData.event.eventdate) }
                           </Text>
                           <Text style={{color: '#fff', fontSize: 16, marginLeft: 4, fontWeight: "bold"}}>
-                            { this.formatDay(rowData.eventdate) }
+                            { this.formatDay(rowData.event.eventdate) }
                           </Text>
                         </View>
-                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventdescription}</Text>
-                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventlocation}</Text>
+                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventdescription}</Text>
+                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventlocation}</Text>
                     </View>
                 </View>
                 </View>}

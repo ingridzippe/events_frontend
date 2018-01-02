@@ -12,7 +12,7 @@ import {
   // DatePickerIOS,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 // import ImagePicker from 'react-native-image-crop-picker';
@@ -174,7 +174,7 @@ class CreateEventScreen extends React.Component {
   render() {
     return (
         <Background>
-        <TopBar />
+        <TopBarNav navigation={this.props.navigation} />
         <View style={styles.container}>
           {/* <Text style={styles.textBig}>Create an event.</Text> */}
           {/* <TouchableOpacity

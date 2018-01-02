@@ -8,7 +8,7 @@ import {
   Button,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
@@ -30,7 +30,7 @@ class SearchScreen extends React.Component {
   render() {
     return (
         <Background>
-        <TopBar />
+        <TopBarNav navigation={this.props.navigation} />
         <View style={styles.container}>
           <Text style={styles.textBig}>
             Search by event type, other keywords, and location coming soon.

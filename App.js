@@ -1,6 +1,7 @@
 // import React from 'react';
 import { StackNavigator } from 'react-navigation';
 import BottomBarNav from './components/BottomBarNav';
+import TopBarNav from './components/TopBarNav';
 import LoginScreen from './screens/LoginScreen';
 import MessagesScreen from './screens/MessagesScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -12,6 +13,7 @@ import PeopleScreen from './screens/PeopleScreen';
 import UpdateScreen from './screens/UpdateScreen';
 import MyProfileScreen from './screens/MyProfileScreen';
 import EditMyProfileScreen from './screens/EditMyProfileScreen';
+import MapScreen from './screens/MapScreen';
 
 // const domain = "https://something-horizons.herokuapp.com";
 //const domain = "https://hohoho-backend.herokuapp.com"; // Old Server
@@ -24,6 +26,12 @@ export default StackNavigator({
     navigationOptions: {
       title: 'BottomBar',
     },
+  },
+  TopBarNav: {
+    screen: TopBarNav,
+    // navigationOptions: {
+    //   title: 'TopBar',
+    // },
   },
   // Home: {
   //   screen: HomeScreen,
@@ -54,6 +62,9 @@ export default StackNavigator({
   },
   MyProfile: {
     screen: MyProfileScreen,
+  },
+  Map: {
+    screen: MapScreen,
   },
   EditMyProfile: {
     screen: EditMyProfileScreen,

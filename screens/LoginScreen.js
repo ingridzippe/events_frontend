@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';

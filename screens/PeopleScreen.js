@@ -9,7 +9,7 @@ import {
   ListView,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
@@ -55,10 +55,56 @@ class SearchScreen extends React.Component {
       console.log('could not get events');
     });
   }
+  postPeopleLike(id) {
+  fetch(`http://localhost:3000/createpeoplelike`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          likedid: id,
+          vibe: 'like',
+      })
+    })
+    .then((response) => {
+        console.log('RESPONSE', response);
+        return response.json();
+    })
+    .then((responseJson) => {
+      console.log('responseJson', responseJson);
+      if (responseJson.success === true) {
+        console.log('peoplelike', responseJson.peoplelike);
+      } else { console.log('peoplelike did not save') }
+    })
+    .catch((err) => { console.log('it errored', err); });
+  }
+  postPeopleDislike(id) {
+  fetch(`http://localhost:3000/createpeoplelike`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          likedid: id,
+          vibe: 'dislike',
+      })
+    })
+    .then((response) => {
+        console.log('RESPONSE', response);
+        return response.json();
+    })
+    .then((responseJson) => {
+      console.log('responseJson', responseJson);
+      if (responseJson.success === true) {
+        console.log('peoplelike', responseJson.peoplelike);
+      } else { console.log('peoplelike did not save') }
+    })
+    .catch((err) => { console.log('it errored', err); });
+  }
   render() {
     return (
         <Background>
-        <TopBar />
+        <TopBarNav navigation={this.props.navigation} />
         <ListView
           // style={styles.eventsContainer}
           // showsVerticalScrollIndicator={false}
@@ -67,8 +113,9 @@ class SearchScreen extends React.Component {
           renderRow={(rowData) =>
                   <View>
                   <Swiper
-                    onTossLeft={card => console.log(card, 'tossed left')}
-                    onTossRight={card => console.log(card, 'tossed right')}
+                    // onTossLeft={card => console.log(card, 'tossed left')}
+                    onTossLeft={card => { this.postPeopleDislike(rowData.id); }}
+                    onTossRight={card => { this.postPeopleLike(rowData.id); }}
                     actionsBar={toss => <Actions toss={toss} />}
                   >
                     <Card

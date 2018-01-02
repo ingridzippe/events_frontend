@@ -121,7 +121,6 @@ const styles = StyleSheet.create({
     // borderColor: '#fff'
   },
   user: {
-    width: 270,
     marginTop: 11,
     marginLeft: 16,
     fontSize: 16,

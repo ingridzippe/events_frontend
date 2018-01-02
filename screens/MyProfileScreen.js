@@ -7,7 +7,7 @@ import {
   Image
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
-import TopBar from '../components/TopBar';
+import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 // import BottomBar from '../components/BottomBar';
 import styles from '../styles/styles';
@@ -35,6 +35,7 @@ class MyProfileScreen extends React.Component {
     this.formatDate = this.formatDate.bind(this);
     this.formatMonth = this.formatMonth.bind(this);
     this.formatDay = this.formatDay.bind(this);
+
     fetch(`${domain}/myevents`)
     .then((response) => response.json())
     .then((responseJson) => {
@@ -101,7 +102,7 @@ class MyProfileScreen extends React.Component {
   render() {
     return (
       <Background>
-      <TopBar />
+      <TopBarNav navigation={this.props.navigation} />
       <View style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic_user.png')}
                style={{height: 250, borderTopWidth: 0, borderColor: '#f7f7f7'}}/>
