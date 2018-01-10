@@ -14,7 +14,7 @@ import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
 
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
 
 class SearchScreen extends React.Component {
   static navigationOptions = {

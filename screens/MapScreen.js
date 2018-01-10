@@ -15,7 +15,12 @@ import MapView from 'react-native-maps';
 import styles from '../styles/styles';
 
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
+// localhost
+// const domain = 'http://localhost:3000';
+// postgres SQL
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -53,7 +58,7 @@ class MapScreen extends React.Component {
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
 
-    fetch(`http://localhost:3000/peoplelist`)
+    fetch(`${domain}/peoplelist`)
     .then((res) => { return res.json(); })
     .then((resj) => {
         if (resj.success === true) {
@@ -80,7 +85,7 @@ class MapScreen extends React.Component {
         console.log('long', this.state.longitude)
 
 
-        return fetch(`http://localhost:3000/recordlatandlong`, {
+        return fetch(`${domain}/recordlatandlong`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'

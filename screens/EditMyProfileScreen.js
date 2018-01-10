@@ -18,7 +18,11 @@ import { RNS3 } from 'react-native-aws3';
 
 // const domain = "https://something-horizons.herokuapp.com";
 // const domain = 'https://still-citadel-74266.herokuapp.com';
-const domain = 'http://localhost:3000';
+// localhost
+// const domain = 'http://localhost:3000';
+// postgres SQL
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 class EditMyProfileScreen extends React.Component {
   static navigationOptions = {

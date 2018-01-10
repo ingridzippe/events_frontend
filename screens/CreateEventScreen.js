@@ -20,11 +20,16 @@ import styles from '../styles/styles';
 
 // const domain = "https://something-horizons.herokuapp.com";
 // const domain = 'https://still-citadel-74266.herokuapp.com';
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
 import { RNS3 } from 'react-native-aws3';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 // const domain = 'https://something-horizons.herokuapp.com';
+// localhost
+
+// postgres SQL
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 // var ImagePicker = require('react-native-image-crop-picker');
 
@@ -125,7 +130,7 @@ class CreateEventScreen extends React.Component {
     this.setState({modalVisible: false});
   }
   postCreateEvent() {
-  fetch(`http://localhost:3000/create`, {
+  fetch(`${domain}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

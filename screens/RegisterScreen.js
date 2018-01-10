@@ -18,7 +18,13 @@ import { connect } from 'react-redux';
 
 // const domain = 'https://something-horizons.herokuapp.com';
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
+
+// localhost
+// const domain = 'http://localhost:3000';
+// postgres sql
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 class RegisterScreen extends React.Component {
   static navigationOptions = {
@@ -83,7 +89,7 @@ class RegisterScreen extends React.Component {
   postLogin() {
     console.log('signup clicked');
     // return fetch(`${domain}/register`, {
-    return fetch(`http://localhost:3000/register`, {
+    return fetch(`${domain}/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

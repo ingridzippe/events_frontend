@@ -18,7 +18,13 @@ import Card from '@reactscreens/swiper/card';
 import Actions from '@reactscreens/swiper/actions';
 
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
+
+// localhost
+// const domain = 'http://localhost:3000';
+// postgres sql
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -35,7 +41,7 @@ class SearchScreen extends React.Component {
     };
   }
   componentDidMount() {
-    fetch(`http://localhost:3000/peoplelist`)
+    fetch(`${domain}/peoplelist`)
     .then((response) => {
       console.log('response 1', response)
       return response.json();
@@ -56,7 +62,7 @@ class SearchScreen extends React.Component {
     });
   }
   postPeopleLike(id) {
-  fetch(`http://localhost:3000/createpeoplelike`, {
+  fetch(`${domain}/createpeoplelike`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -79,7 +85,7 @@ class SearchScreen extends React.Component {
     .catch((err) => { console.log('it errored', err); });
   }
   postPeopleDislike(id) {
-  fetch(`http://localhost:3000/createpeoplelike`, {
+  fetch(`${domain}/createpeoplelike`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

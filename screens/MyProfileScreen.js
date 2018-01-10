@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ListView,
+  ScrollView,
   Image
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
@@ -16,8 +17,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
 // const domain = 'https://something-horizons.herokuapp.com';
+// mongo backend
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = 'http://localhost:3000';
+// const domain = 'http://localhost:3000';
+// postgres backend
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -36,22 +40,37 @@ class MyProfileScreen extends React.Component {
     this.formatMonth = this.formatMonth.bind(this);
     this.formatDay = this.formatDay.bind(this);
 
-    fetch(`${domain}/myevents`)
-    .then((response) => response.json())
-    .then((responseJson) => {
-        console.log('responseJson', responseJson);
-        if (responseJson.success === true) {
-            console.log('RESPONSE JSON MESSAAGES', responseJson);
-            this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
+    // fetch(`${domain}/myevents`)
+    // .then((response) => response.json())
+    // .then((responseJson) => {
+    //     console.log('responseJson', responseJson);
+    //     if (responseJson.success === true) {
+    //         console.log('RESPONSE JSON MESSAAGES', responseJson);
+    //         this.setState({ dataSource: ds.cloneWithRows(responseJson.events) });
+    //      } else {
+    //         console.log('no personal events found')
+    //      }
+    //      console.log(responseJson);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   console.log('it errored MMMMM');
+    // });
+
+    fetch(`${domain}/myreactions`)
+    .then((res) => res.json())
+    .then((resj) => {
+        console.log('resj', resj);
+        if (resj.success === true) {
+            console.log('RESPONSE JSON My events', resj);
+            this.setState({ dataSource: ds.cloneWithRows(resj.reactions) });
          } else {
-            console.log('no personal events found')
+            console.log('no personal reactions found')
          }
-         console.log(responseJson);
+         console.log(resj);
     })
-    .catch((err) => {
-      console.log(err);
-      console.log('it errored MMMMM');
-    });
+    .catch((err) => { console.log(err); });
+
   }
   componentWillMount() {
     fetch(`${domain}/getmyprofile`)
@@ -103,7 +122,7 @@ class MyProfileScreen extends React.Component {
     return (
       <Background>
       <TopBarNav navigation={this.props.navigation} />
-      <View style={{ flex: 1, backgroundColor: 'transparent' }}>
+      <ScrollView style={{ flex: 1, backgroundColor: 'transparent' }}>
         <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic_user.png')}
                style={{height: 250, borderTopWidth: 0, borderColor: '#f7f7f7'}}/>
         <View style={{ flexDirection: 'row', borderTopWidth: 1, borderColor: '#946E6E'}}>
@@ -163,10 +182,10 @@ class MyProfileScreen extends React.Component {
           <Text style={styles.lessthan}>less than a mile away</Text>
         </View>
         <View style={{ justifyContent: 'space-between', backgroundColor: '#221720', flexDirection: 'row', paddingTop: 10, height: 64, borderBottomWidth: 1, borderColor: '#946E6E' }}>
-          <Icon name='hand-peace-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
-          <Icon name='heart-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
+          <Icon name='hand-peace-o' style={{ flex: 1, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
+          {/* <Icon name='heart-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
           <Icon name='smile-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 21, marginTop: 11, color: '#fff' }} />
-          <Icon name='calendar-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
+          <Icon name='calendar-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} /> */}
         </View>
           <View style={{
             flex: 1,
@@ -179,55 +198,71 @@ class MyProfileScreen extends React.Component {
               showsVerticalScrollIndicator={false}
               dataSource={this.state.dataSource}
               renderRow={(rowData) =>
+
                 <TouchableOpacity style={styles.event}>
                   {!rowData.eventLatitude &&
                     <View>
                     <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
-                      { console.log('rowdata.image', rowData.userDetails.image) }
-                      <Image source={ rowData.userDetails.image ? { uri: rowData.userDetails.image } : require('../assets/generic_user.png') }
+                      <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic_user.png') }
                              style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
-                      {/* <Image source={rowData.userDetails.image ? {uri: rowData.userDetails.image} : require('../assets/generic_user.png') }
-                             style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/> */}
-                      <Text style={styles.user}>{rowData.userDetails.username}</Text>
+                      <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                          <Text style={styles.user}>{rowData.user.username}</Text>
+                          <Text style={{fontSize: 16, marginLeft: 8, marginTop: 11.8, alignItems: 'flex-start', color: '#fff' }}>{rowData.type==='like' ? 'likes' : 'is going to'}</Text>
+                      </View>
                     </View>
                     <Image
                       style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
-                      source={{ uri: rowData.eventImage }} />
-                      <View style={{flex: 1, marginTop: 2, marginBottom: 9, flexDirection: 'row', justifyContent: 'space-between'}}>
-                          <TouchableOpacity style={[styles.bottombaritem]}>
-                            <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
-                          </TouchableOpacity>
-                          <TouchableOpacity style={[styles.bottombaritem]}>
-                            <Icon name='comment-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
-                          </TouchableOpacity>
-                          <TouchableOpacity style={[styles.bottombaritem]}>
-                            <Icon name='bookmark-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
-                          </TouchableOpacity>
-                          <TouchableOpacity style={[styles.bottombaritem]}>
-                            <Icon name='paper-plane-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
-                          </TouchableOpacity>
-                      </View>
-                      <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
-                          <View style={{ marginLeft: 75 }}>
-                              <View style={{flex: 1, flexDirection: 'row', width: 40}}>
-                                <Text style={{color: '#fff', fontSize: 16}}>
-                                  { this.formatMonth(rowData.eventDate) }
-                                </Text>
-                                <Text style={{color: '#fff', fontSize: 16, marginLeft: 4, fontWeight: "bold"}}>
-                                  { this.formatDay(rowData.eventDate) }
-                                </Text>
-                              </View>
-                            <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventDescription}</Text>
-                            <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.eventLocation}</Text>
-                          </View>
-                      </View>
+                      source={ rowData.event.eventimage ? { uri: rowData.event.eventimage } : require('../assets/drip_logo.png') } />
+                    <View style={{flex: 1, marginTop: 2, marginBottom: 9, flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postGoingReaction(rowData.event.id); }} >
+                          <Icon name='hand-peace-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                        </TouchableOpacity>
+                        {/* <TouchableOpacity style={[styles.bottombaritem]}>
+                          <Icon name='comment-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                        </TouchableOpacity> */}
+                        <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postLikeReaction(rowData.event.id); }} >
+                          <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={[styles.bottombaritem]}>
+                          <Icon name='paper-plane-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
+                        <View style={{ marginLeft: 75 }}>
+                            <View style={{flex: 1, flexDirection: 'row', width: 40}}>
+                              <Text style={{color: '#fff', fontSize: 16}}>
+                                { this.formatMonth(rowData.event.eventdate) }
+                              </Text>
+                              <Text style={{color: '#fff', fontSize: 16, marginLeft: 4, fontWeight: "bold"}}>
+                                { this.formatDay(rowData.event.eventdate) }
+                              </Text>
+                            </View>
+                          <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventdescription}</Text>
+                          <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventlocation}</Text>
+                        </View>
+                    </View>
                     </View>}
+                  {/* {rowData.eventLatitude &&
+                    <MapView
+                      style={{ flex: 7}}
+                      region={{ latitude: 37.77182221974024,
+                               longitude: -122.409295264717,
+                               latitudeDelta: 0.1,
+                               longitudeDelta: 0.05 }}
+                  />} */}
+                  {/* {rowData.eventLatitude &&
+                    <MapView style={{flex: 7}}
+                        region={{ latitude: 37.77182221974024,
+                                 longitude: -122.409295264717,
+                                 latitudeDelta: 0.1,
+                                 longitudeDelta: 0.05 }}
+                    />} */}
                 </TouchableOpacity>
             }
           />
          </View>
          <BottomBarNav navigation={this.props.navigation} />
-      </View>
+      </ScrollView>
       </Background>
     );
   }

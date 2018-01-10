@@ -15,7 +15,13 @@ import DatePicker from '../components/DatePicker';
 import styles from '../styles/styles';
 
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
+
+// localhost
+// const domain = 'http://localhost:3000';
+// postgres sql
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -34,7 +40,7 @@ class UpdateScreen extends React.Component {
     this.postMatch = this.postMatch.bind(this);
   }
   componentDidMount(id) {
-    fetch(`http://localhost:3000/updates`)
+    fetch(`${domain}/updates`)
     .then((res) => { return res.json(); })
     .then((resj) => {
         console.log('WHAT IS THIS', resj);
@@ -50,7 +56,7 @@ class UpdateScreen extends React.Component {
     var ilikesarr = [];
     var match = [];
     var thisuser = '';
-    fetch(`http://localhost:3000/getlikes`)
+    fetch(`${domain}/getlikes`)
       .then((alikes) => { return alikes.json(); })
       .then((alikesjson) => {
         console.log('alikesjson', alikesjson);
@@ -66,7 +72,7 @@ class UpdateScreen extends React.Component {
           console.log('i', i);
           console.log('alikesarr[i]', alikesarr[i]);
           var thei = alikesarr[i];
-          fetch(`http://localhost:3000/getlikes/${alikesarr[i]}`)
+          fetch(`${domain}/getlikes/${alikesarr[i]}`)
             .then((ilikes) => { return ilikes.json(); })
             .then((ilikesjson) => {
               console.log(`i=${thei}=likesjson`, ilikesjson);
@@ -215,7 +221,7 @@ class UpdateScreen extends React.Component {
     // .catch((err) => { console.log(err); });
   }
   postMatch(people1, people2, event) {
-  fetch(`http://localhost:3000/createupdate`, {
+  fetch(`${domain}/createupdate`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -239,7 +245,7 @@ class UpdateScreen extends React.Component {
     .catch((err) => { console.log('it errored', err); });
   }
   getUserLikes(id) {
-    fetch(`http://localhost:3000/getlikes/:${id}`)
+    fetch(`${domain}/getlikes/:${id}`)
     .then((res) => res.json())
     .then((resj) => {
         console.log('resj', resj);

@@ -17,7 +17,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 // const domain = 'https://something-horizons.herokuapp.com';
 // const domain = "https://still-citadel-74266.herokuapp.com";
-const domain = process.env.BACKEND;
+// const domain = process.env.BACKEND;
+// localhost
+// postgres SQL
+const domain = 'https://whispering-savannah-32809.herokuapp.com';
+
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -76,7 +80,7 @@ class MessagesScreen extends React.Component {
   // });
   // }
 
-    fetch(`http://localhost:3000/reactions`)
+    fetch(`${domain}/reactions`)
     .then((response) => {
       console.log('response 1', response)
       return response.json();
@@ -107,7 +111,7 @@ class MessagesScreen extends React.Component {
   //
   postCreateEvent() {
   console.log('creating event');
-  return fetch(`http://localhost:3000/create`, {
+  return fetch(`${domain}/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -168,7 +172,7 @@ class MessagesScreen extends React.Component {
   //     });
   // }
   longTouchUser(lat, long) {
-      return fetch(`http://localhost:3000/create`, {
+      return fetch(`${domain}/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -224,7 +228,7 @@ class MessagesScreen extends React.Component {
     return dateArr[2];
   }
   postGoingReaction(eventid) {
-  fetch(`http://localhost:3000/createreaction`, {
+  fetch(`${domain}/createreaction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -247,7 +251,7 @@ class MessagesScreen extends React.Component {
     .catch((err) => { console.log('it errored', err); });
   }
   postLikeReaction(eventid) {
-  fetch(`http://localhost:3000/createreaction`, {
+  fetch(`${domain}/createreaction`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
