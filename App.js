@@ -8,6 +8,7 @@ import RegisterScreen from './screens/RegisterScreen';
 // import SaveScreen from './screens/SaveScreen';
 // import UsersScreen from './screens/UsersScreen';
 import CreateEventScreen from './screens/CreateEventScreen';
+import InviteFriendsScreen from './screens/InviteFriendsScreen';
 import SearchScreen from './screens/SearchScreen';
 import PeopleScreen from './screens/PeopleScreen';
 import UpdateScreen from './screens/UpdateScreen';
@@ -60,6 +61,9 @@ export default StackNavigator({
   Create: {
     screen: CreateEventScreen,
   },
+  InviteFriends: {
+    screen: InviteFriendsScreen,
+  },
   MyProfile: {
     screen: MyProfileScreen,
   },
@@ -70,6 +74,6 @@ export default StackNavigator({
     screen: EditMyProfileScreen,
   },
 }, {
-  initialRouteName: 'Login',
+  initialRouteName: 'Messages',
   headerMode: 'screen'
 });

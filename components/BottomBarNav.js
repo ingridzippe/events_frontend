@@ -22,6 +22,13 @@ class BottomBarNav extends React.Component {
             <Icon name='home' style={{ fontSize: 23, marginTop: 1,
                 color: '#fff' }} />
           </TouchableOpacity>
+          {/* <TouchableOpacity
+            style={[styles.bottombaritem]}
+            onPress={() => { this.props.navigation.navigate('Create'); }}
+          >
+            <Icon name='plus-square-o' style={{ fontSize: 23, marginTop: 1,
+                color: '#fff' }} />
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={[styles.bottombaritem]}
             onPress={() => { this.props.navigation.navigate('People') }}

@@ -9,6 +9,7 @@ import {
   ImagePickerIOS,
   Image,
   Button,
+  ScrollView,
   // DatePickerIOS,
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
@@ -180,7 +181,7 @@ class CreateEventScreen extends React.Component {
     return (
         <Background>
         <TopBarNav navigation={this.props.navigation} />
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container, {paddingTop: 130, paddingBottom: 100}}>
           {/* <Text style={styles.textBig}>Create an event.</Text> */}
           {/* <TouchableOpacity
             style={[styles.button, styles.buttonBlue]}
@@ -221,9 +222,10 @@ class CreateEventScreen extends React.Component {
           </TouchableOpacity> */}
 
           {this.state.displayImage ?
-            <Image
-              style={{ alignSelf: 'stretch', height: 100, marginBottom: 24, marginTop: -53 }}
-              source={{ uri: this.state.displayImage }} /> :
+            <TouchableOpacity onPress={() => { this.pickImage(); }}>
+              <Image
+                style={{ alignSelf: 'stretch', height: 100, marginBottom: 24, marginTop: -53 }}
+                source={{ uri: this.state.displayImage }} /></TouchableOpacity> :
             <TouchableOpacity
               style={[styles.button, styles.buttonBlue, {marginTop: -52, marginBottom: 30}]}
               onPress={() => { this.pickImage(); }} >
@@ -253,8 +255,8 @@ class CreateEventScreen extends React.Component {
           >
             <Text style={styles.buttonLabel}>Post</Text>
           </TouchableOpacity>
-          <BottomBarNav navigation={this.props.navigation} />
-        </View>
+        </ScrollView>
+        <BottomBarNav navigation={this.props.navigation} />
         </Background>
     );
   }

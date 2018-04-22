@@ -24,8 +24,14 @@ class TopBarNav extends React.Component {
           onPress={() => { this.props.navigation.navigate('Create'); }} >
           <Icon name='plus-square-o' style={{ fontSize: 24, marginTop: 1, color: '#fff'}} />
         </TouchableOpacity>
-        <Image source={require('../assets/drip_logo.png')}
-               style={{marginTop: 21, width: 50, height: 30}}/>
+        <Image source={require('../assets/drip_current.png')}
+              style={{marginTop: 22, width: 54, height: 35}}/>
+              {/* style={{marginTop: 21, width: 50, height: 30}}/> */}
+         {/* <TouchableOpacity
+           style={{position: 'absolute', right: 14, top: 32}}
+           onPress={() => { this.props.navigation.navigate('InviteFriends'); }} >
+           <Icon name='plus' style={{ fontSize: 20, marginTop: 3, color: '#fff'}} />
+         </TouchableOpacity> */}
       </View>
     );
   }

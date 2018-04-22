@@ -111,9 +111,11 @@ class SearchScreen extends React.Component {
     return (
         <Background>
         <TopBarNav navigation={this.props.navigation} />
+        <View style={{flex: 1, marginTop: 80}}>
         <ListView
           // style={styles.eventsContainer}
           // showsVerticalScrollIndicator={false}
+          style={{marginTop: -80}}
           scrollEnabled={false}
           dataSource={this.state.dataSource}
           renderRow={(rowData) =>
@@ -134,6 +136,7 @@ class SearchScreen extends React.Component {
                   </View>
           }
         />
+        </View>
           <BottomBarNav navigation={this.props.navigation} />
         </Background>
     );

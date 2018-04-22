@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  AppRegistry,
   AsyncStorage,
   View,
   Text,
@@ -13,6 +14,7 @@ import SafariView from 'react-native-safari-view';
 import styles from '../styles/styles';
 import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
+import MapView from 'react-native-maps';
 // import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
@@ -34,11 +36,54 @@ class LoginScreen extends React.Component {
     this.state = {
       user: '',
       username: '',
-      password: ''
+      password: '',
+      latitude: 0,
+      longitude: 0,
     };
   }
+
+  watchID: ?number = null;
+
   componentDidMount() {
     // Add event listener to handle OAuthLogin:// URLs
+
+    // locationManager.requestAlwaysAuthorization();
+    navigator.geolocation.requestAuthorization();
+    // Geolocation.requestAuthorization();
+    //
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     this.setState({
+    //       latitude: position.coords.latitude,
+    //       longitude: position.coords.longitude,
+    //       error: null,
+    //     });
+    //   },
+    //   (error) => this.setState({ error: error.message }),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    // );
+
+    navigator.geolocation.getCurrentPosition((position) => {
+          var lat = parseFloat(position.coords.latitude);
+          var lon = parseFloat(position.coords.longitude);
+          // const initialPosition = JSON.stringify(position);
+          // this.setState({ initialPosition });
+          console.log("lat");
+          console.log(lat);
+          console.log("lon");
+          console.log(lon);
+       },
+       (error) => alert(error.message),
+       { timeout: 20000 }
+    );
+    this.watchID = navigator.geolocation.watchPosition((position) => {
+       const lastPosition = JSON.stringify(position);
+       this.setState({ lastPosition });
+    });
+
+    console.log(this.state.latitude);
+    console.log(this.state.longitude);
+
     Linking.addEventListener('url', this.handleOpenURL);
     // Launched from an external URL
     Linking.getInitialURL().then((url) => {
@@ -96,7 +141,10 @@ class LoginScreen extends React.Component {
     .then((responseJson) => {
       if (responseJson.success) {
         if (responseJson.user) {
-          AsyncStorage.setItem('dripuser', JSON.stringify(responseJson.user));
+          AsyncStorage.setItem('dripuser', responseJson.user.username);
+          console.log('R', responseJson)
+          console.log('R P', responseJson.password)
+          AsyncStorage.setItem('dripuserpassword', responseJson.user.password);
         }
         this.props.navigation.navigate('Messages');
       } else {
@@ -133,13 +181,13 @@ class LoginScreen extends React.Component {
             <Text style={styles.buttonLabel}>Login</Text>
           </TouchableOpacity>
           <Text style={styles.or}>OR</Text>
-          <TouchableOpacity style={[styles.button, styles.buttonBlue]}>
+          {/* <TouchableOpacity style={[styles.button, styles.buttonBlue]}>
             <Text
               style={styles.buttonLabel}
               onPress={() => { this.loginWithFacebook(); }} >
               Log in with Facebook
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <Text
             style={styles.or}
             onPress={() => { this.props.navigation.navigate('Register'); }}>

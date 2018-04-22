@@ -188,6 +188,8 @@ const styles = StyleSheet.create({
   or: {
     fontFamily: 'AvenirNext-Regular',
     padding: 20,
+    backgroundColor: 'transparent',
+    textAlign: 'center'
   },
   bottombar: {
     flex: 1,
@@ -225,12 +227,12 @@ const styles = StyleSheet.create({
   },
   done: {
     position: 'absolute',
-    top: -34,
+    top: 37,
     right: 20,
   },
   cancel: {
     position: 'absolute',
-    top: -34,
+    top: 37,
     left: 20,
   },
   bottombaritem: {

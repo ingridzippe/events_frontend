@@ -123,15 +123,15 @@ class MyProfileScreen extends React.Component {
       <Background>
       <TopBarNav navigation={this.props.navigation} />
       <ScrollView style={{ flex: 1, backgroundColor: 'transparent' }}>
-        <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic_user.png')}
+        <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic.jpg')}
                style={{height: 250, borderTopWidth: 0, borderColor: '#f7f7f7'}}/>
         <View style={{ flexDirection: 'row', borderTopWidth: 1, borderColor: '#946E6E'}}>
-        <View style={{flex: 0.7, marginTop: 6 }}>
+        <View style={{flex: 0.7, marginTop: 6, marginBottom: 16 }}>
         <Text style={styles.profilewords, {marginLeft: 33, marginTop: 16, color: '#fff', fontSize: 35}}>{this.state.user ? this.state.user.fullname : ''}</Text>
         <Text style={styles.profilewords}>{this.state.user ? this.state.user.username : ''}</Text>
         <Text style={styles.profilewords}>{this.state.user ? this.state.user.website : ''}</Text>
         </View>
-          {/* <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic_user.png')}
+          {/* <Image source={this.state.user ? {uri: this.state.user.image} : require('../assets/generic.jpg')}
                  style={{marginLeft: 30, marginTop: 10, width: 76, height: 76, borderWidth: 1, borderRadius: 38, borderColor: '#f7f7f7'}}/> */}
           {/* <View style={{ marginTop: 12, height: 120, flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>
               <Text style={styles.profilewords}>{this.state.user ? this.state.user.fullname : ''}</Text>
@@ -177,10 +177,10 @@ class MyProfileScreen extends React.Component {
               </View>
           {/* </View> */}
         </View>
-        <View style={{ flexDirection: 'row', paddingTop: 10, marginTop: 18, height: 64, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#946E6E' }}>
+        {/* <View style={{ flexDirection: 'row', paddingTop: 10, marginTop: 18, height: 64, borderTopWidth: 1, borderBottomWidth: 1, borderColor: '#946E6E' }}>
           <Icon name='map-marker' style={{ width: 10, fontSize: 17, marginLeft: 37, marginTop: 10, color: '#fff' }} />
           <Text style={styles.lessthan}>less than a mile away</Text>
-        </View>
+        </View> */}
         <View style={{ justifyContent: 'space-between', backgroundColor: '#221720', flexDirection: 'row', paddingTop: 10, height: 64, borderBottomWidth: 1, borderColor: '#946E6E' }}>
           <Icon name='hand-peace-o' style={{ flex: 1, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
           {/* <Icon name='heart-o' style={{ flex: 0.5, textAlign: 'center', width: 20, fontSize: 20, marginTop: 11, color: '#fff' }} />
@@ -192,6 +192,7 @@ class MyProfileScreen extends React.Component {
             backgroundColor: 'transparent',
             alignItems: 'center',
             justifyContent: 'center',
+            paddingBottom: 50,
           }}>
             <ListView
               style={styles.eventsContainer}
@@ -203,7 +204,7 @@ class MyProfileScreen extends React.Component {
                   {!rowData.eventLatitude &&
                     <View>
                     <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
-                      <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic_user.png') }
+                      <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic.jpg') }
                              style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
                       <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
                           <Text style={styles.user}>{rowData.user.username}</Text>
@@ -261,8 +262,8 @@ class MyProfileScreen extends React.Component {
             }
           />
          </View>
-         <BottomBarNav navigation={this.props.navigation} />
-      </ScrollView>
+        </ScrollView>
+        <BottomBarNav navigation={this.props.navigation} />
       </Background>
     );
   }

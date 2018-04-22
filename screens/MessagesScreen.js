@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   ListView,
   Image,
+  TextInput
 } from 'react-native';
 import BottomBarNav from '../components/BottomBarNav';
 import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import styles from '../styles/styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import { StackNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation';
 // import { ImagePicker, Location, Permissions, MapView } from 'expo';
 
 // const domain = 'https://something-horizons.herokuapp.com';
@@ -23,7 +24,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 const domain = 'https://whispering-savannah-32809.herokuapp.com';
 
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+var search = false;
 
 class MessagesScreen extends React.Component {
   static navigationOptions = {
@@ -33,7 +35,7 @@ class MessagesScreen extends React.Component {
     // headerStyle: {
     //   backgroundColor: "#000"
     // },
-    header: null
+    header: null,
   };
   constructor(props) {
     super(props);
@@ -41,22 +43,72 @@ class MessagesScreen extends React.Component {
       dataSource: ds.cloneWithRows([]),
       latitude: 0,
       longitude: 0,
+      username: null,
+      password: null,
+      search: false,
     };
     this.formatDate = this.formatDate.bind(this);
     this.formatMonth = this.formatMonth.bind(this);
     this.formatDay = this.formatDay.bind(this);
+    this.searchByKeyword = this.searchByKeyword.bind(this);
+    this.setSearch = this.setSearch.bind(this);
+    this.getLocation = this.getLocation.bind(this);
+    this.postCreateEvent = this.postCreateEvent.bind(this);
   }
   componentDidMount() {
     // if there is a user in phone storage, go to posts
     AsyncStorage.getItem('dripuser')
-      .then((result) => {
-        console.log(result);
-        if(result) {
-          console.log('yes user, stay on posts');
-        } else {
-          this.props.navigation.navigate('Login')
+      .then((resultuser) => {
+        if(resultuser) {
+
+          AsyncStorage.getItem('dripuserpassword')
+          .then((resultpass) => {
+            if(resultpass) {
+
+              console.log('USER', resultuser)
+              console.log('PASS', resultpass)
+              // this.setState({ username: resultuser });
+              // this.setState({ password: resultpass });
+
+              return fetch(`${domain}/login`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  username: resultuser,
+                  password: resultpass,
+                })
+              })
+              .then((response) => response.json())
+              .then((responseJson) => {
+                console.log("DOES THIS SEND AYTHING BACK?", responseJson)
+                if (responseJson.success) {
+                  if (responseJson.user) {
+                    console.log('PLEASE RETURN VALID LOGIN', responseJson.user)
+                    AsyncStorage.setItem('dripuser', responseJson.user.username);
+                    AsyncStorage.setItem('dripuserpassword', responseJson.user.password);
+
+                  }
+                } else {
+                  alert('Invalid credentials bruh');
+                }
+              })
+              .catch((err) => {
+                /* do something if there was an error with fetching */
+                console.log('it errored', err);
+              });
+
+            } else { // if result pass
+              this.props.navigation.navigate('Login');
+            }
+          }) // result pass
+
+        } else { // if resultuser
+          this.props.navigation.navigate('Login');
         }
-      })
+      }) // resultuser
+
 
   // LOADS EVENTS
   // fetch(`http://localhost:3000/events`)
@@ -79,6 +131,21 @@ class MessagesScreen extends React.Component {
   //   console.log('could not get events');
   // });
   // }
+    {console.log("right before")}
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+          this.setState({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            error: null,
+          });
+        console.log('currlat', this.state.latitude)
+        console.log('currlong', this.state.longitude)
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+    {console.log("right after")}
 
     fetch(`${domain}/reactions`)
     .then((response) => {
@@ -109,38 +176,6 @@ class MessagesScreen extends React.Component {
   // }
 
   //
-  postCreateEvent() {
-  console.log('creating event');
-  return fetch(`${domain}/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          eventDate: this.state.eventDate,
-          eventLocation: this.state.eventLocation,
-          eventDescription: this.state.eventDescription
-      })
-    })
-    .then((response) => {
-        console.log('RESPONSE', response);
-        response.json();
-    })
-    .then((responseJson) => {
-      /* do something with responseJson and go back to the Login view but
-       * make sure to check for responseJson.success! */
-      console.log('responseJson', responseJson);
-      if (responseJson.success === true) {
-        console.log('RESPONSE EVENT', responseJson);
-      } else {
-        alert('invalid');
-      }
-    })
-    .catch((err) => {
-      /* do something if there was an error with fetching */
-      console.log('it errored', err);
-    });
-  }
   // longTouchUser(lat, long) {
   // console.log('long touch user YAYAYAYAY');
   //   return fetch(`${domain}/create`, {
@@ -179,7 +214,7 @@ class MessagesScreen extends React.Component {
         },
         body: JSON.stringify({
           eventLatitude: lat,
-          eventLongitude: long
+          eventLongitude: long,
         })
       })
         .then((response) => console.log('RESPONSE HERE HERE', response))
@@ -274,6 +309,30 @@ class MessagesScreen extends React.Component {
     .catch((err) => { console.log('it errored', err); });
   }
 
+  searchByKeyword(keyword) {
+    console.log(keyword);
+    // fetch(`https://www.eventbriteapi.com/v3/events/search?token=ZGQUVO5F3V3AXFDYRINO&q=${keyword}`)
+    fetch(`https://www.eventbriteapi.com/v3/events/search?expand=organizer,venue&token=ZGQUVO5F3V3AXFDYRINO&q=${keyword}`)
+    .then((response) => {
+      console.log('response 1', response)
+      return response.json();
+    })
+    .then((responseJson) => {
+        console.log('responseJson', responseJson);
+        if (responseJson.events) {
+            console.log('RESPONSE JSON MESSAAGES', responseJson);
+            console.log(this.state.search);
+            search = true;
+            this.setState({ dataSource: ds.cloneWithRows(responseJson.events), search: true });
+         } else { console.log("no events here") }
+         console.log(responseJson);
+    })
+    .catch((err) => {
+      console.log(err);
+      console.log('could not get events');
+    });
+  }
+
   // sendLocation = async(user) => {
   //   let { status } = await Permissions.askAsync(Permissions.LOCATION);
   //   if (status !== 'granted') {
@@ -290,35 +349,137 @@ class MessagesScreen extends React.Component {
   //   this.longTouchUser(latInt, longInt);
   //   console.log('kasdfksjf;slf')
   // }
-  render() {
+
+  setSearch() {
+    search = true;
+  }
+  getLocation(venueid) {
+    console.log("Whats the id");
+    console.log(venueid);
+    fetch(`https://www.eventbriteapi.com/v3/venues/${venueid}/?token=ZGQUVO5F3V3AXFDYRINO`)
+    .then((response) => { return response.json(); })
+    .then((responseJson) => {
+        console.log('responseJson', responseJson);
+        if (responseJson) {
+            console.log('venue', responseJson);
+            return responseJson.venue;
+        } else { console.log("no events here") }
+    })
+    .catch((err) => { console.log(err); });
+  }
+  postCreateEvent(img, date, loc, des) {
+  fetch(`${domain}/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          eventimage: img,
+          eventdate: date,
+          eventlocation: loc,
+          eventdescription: des,
+      })
+    })
+    .then((response) => {
+        console.log('RESPONSE', response);
+        return response.json();
+    })
+    .then((responseJson) => {
+      if (responseJson.success === true) {
+          search = false;
+          this.postLikesReaction(rowData.id);
+          console.log("yes");
+      }
+      else { console.log('event did not save') }
+    })
+    .catch((err) => { console.log('it errored', err); });
+  }
+
+
+render() {
     return (
       <Background>
       <TopBarNav navigation={this.props.navigation} />
+      <View style={{backgroundColor: "#1d161c", height: 33}}>
+        <View style={{backgroundColor: "#544945", marginTop: 2, height: 27, marginLeft: 16, marginRight: 16, borderRadius: 20}}>
+        <TextInput
+            style={{color: "#fff", marginTop: 3, marginLeft: 20}}
+            autoCapitalize="sentences"
+            autoCorrect={true}
+            onChangeText={(text) => this.setState({text})}
+            keyboardType="default"
+            returnKeyType="search"
+            onSubmitEditing={(event) => {
+                console.log(this.state.search);
+                this.setState({search: false});
+                console.log('what?');
+                this.setSearch();
+                this.searchByKeyword(this.state.text);
+            }}
+            placeholder="Search"
+        />
+        </View>
+      </View>
       <View style={{
         flex: 1,
-        // dark
-        // backgroundColor: '#282f37',
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        {/* <TouchableOpacity
-            style={[styles.button, styles.buttonBlue]}
-            onPress={() => { this.props.navigation.navigate('Create'); }}
-        >
-            <Text style={styles.buttonLabel}>Create Event</Text>
-        </TouchableOpacity> */}
-        {/* <ListView
+
+
+        { this.state.search ? <ListView
+          style={styles.eventsContainer}
+          showsVerticalScrollIndicator={false}
           dataSource={this.state.dataSource}
-          renderRow={(rowData) => */}
-            {/* <TouchableOpacity
-                style={[styles.button, styles.buttonBlue]}
-                // onPress={this.sendLocation.bind(this)}
-            >
-                <Text style={styles.buttonLabel}>New Pin</Text>
-            </TouchableOpacity> */}
-          {/* }
-        /> */}
+          renderRow={(rowData) =>
+            <TouchableOpacity style={styles.event}>
+              {!rowData.eventLatitude &&
+                <View>
+                <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
+                  <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                      <Text style={{ marginTop: 11, marginLeft: 16, fontSize: 19, fontWeight: "bold", color: '#fff'}}>
+                          {rowData.name.text}
+                      </Text>
+                  </View>
+                </View>
+                <Image
+                  style={{ alignSelf: 'stretch', height: 100, marginBottom: 0, marginTop: 0 }}
+                  source={ rowData.logo ? { uri: rowData.logo.url } : require('../assets/drip_logo.png') } />
+                <View style={{flex: 1, marginTop: 2, marginBottom: 9, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <TouchableOpacity style={[styles.bottombaritem]}
+                        onPress={() => {
+                            this.postCreateEvent(rowData.logo.url, rowData.end.local, rowData.venue.address.address_1, rowData.description.text, rowData.id)
+                        }}>
+                      <Icon name='hand-peace-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.bottombaritem]}
+                        onPress={() => {
+                            this.postCreateEvent(rowData.logo.url, rowData.end.local, rowData.venue.address.address_1, rowData.description.text, rowData.id)
+                        }}>
+                      <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.bottombaritem]}>
+                      <Icon name='paper-plane-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
+                    <View style={{ marginLeft: 37}}>
+                        <View style={{flex: 1, flexDirection: 'row', width: 50}}>
+                          <Text style={{color: '#fff', fontSize: 16}}>
+                            { this.formatMonth(rowData.end.local) }
+                          </Text>
+                          <Text style={{color: '#fff', fontSize: 16, marginLeft: 4, fontWeight: "bold"}}>
+                            { this.formatDay(rowData.end.local) }
+                          </Text>
+                        </View>
+                      <Text style={{fontWeight: "bold", color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.venue.address.address_1}</Text>
+                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.description.text}</Text>
+                    </View>
+                </View>
+                </View>}
+            </TouchableOpacity> }
+        /> :
         <ListView
           style={styles.eventsContainer}
           showsVerticalScrollIndicator={false}
@@ -328,7 +489,7 @@ class MessagesScreen extends React.Component {
               {!rowData.eventLatitude &&
                 <View>
                 <View style={{flexDirection: 'row', marginLeft: 20, marginBottom: 12}}>
-                  <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic_user.png') }
+                  <Image source={rowData.user.image ? {uri: rowData.user.image} : require('../assets/generic.png') }
                          style={{width: 40, height: 40, borderWidth: 1, borderRadius: 20, borderColor: '#f7f7f7'}}/>
                   <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
                       <Text style={styles.user}>{rowData.user.username}</Text>
@@ -342,9 +503,6 @@ class MessagesScreen extends React.Component {
                     <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postGoingReaction(rowData.event.id); }} >
                       <Icon name='hand-peace-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
                     </TouchableOpacity>
-                    {/* <TouchableOpacity style={[styles.bottombaritem]}>
-                      <Icon name='comment-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
-                    </TouchableOpacity> */}
                     <TouchableOpacity style={[styles.bottombaritem]} onPress={() => { this.postLikeReaction(rowData.event.id); }} >
                       <Icon name='heart-o' style={{ fontSize: 18, color: '#f7f7f7' }} />
                     </TouchableOpacity>
@@ -353,8 +511,8 @@ class MessagesScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start', marginTop: 10}}>
-                    <View style={{ marginLeft: 75 }}>
-                        <View style={{flex: 1, flexDirection: 'row', width: 40}}>
+                    <View style={{ marginLeft: 75, marginRight: 15}}>
+                        <View style={{flex: 1, flexDirection: 'row', width: 50}}>
                           <Text style={{color: '#fff', fontSize: 16}}>
                             { this.formatMonth(rowData.event.eventdate) }
                           </Text>
@@ -362,29 +520,13 @@ class MessagesScreen extends React.Component {
                             { this.formatDay(rowData.event.eventdate) }
                           </Text>
                         </View>
+                      <Text style={{fontWeight: 'bold', paddingBottom: 0, color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventlocation}</Text>
                       <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventdescription}</Text>
-                      <Text style={{color: '#fff', fontSize: 16, marginTop: 3}}>{rowData.event.eventlocation}</Text>
                     </View>
                 </View>
                 </View>}
-              {/* {rowData.eventLatitude &&
-                <MapView
-                  style={{ flex: 7}}
-                  region={{ latitude: 37.77182221974024,
-                           longitude: -122.409295264717,
-                           latitudeDelta: 0.1,
-                           longitudeDelta: 0.05 }}
-              />} */}
-              {/* {rowData.eventLatitude &&
-                <MapView style={{flex: 7}}
-                    region={{ latitude: 37.77182221974024,
-                             longitude: -122.409295264717,
-                             latitudeDelta: 0.1,
-                             longitudeDelta: 0.05 }}
-                />} */}
-            </TouchableOpacity>
-          }
-        />
+            </TouchableOpacity>}
+        /> }
         <BottomBarNav navigation={this.props.navigation} />
       </View>
       </Background>

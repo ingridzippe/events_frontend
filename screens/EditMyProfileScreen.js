@@ -10,11 +10,13 @@ import {
   Image,
   Button,
   ListView,
+  ScrollView,
 } from 'react-native';
 import TopBarNav from '../components/TopBarNav';
 import Background from '../components/Background';
 import styles from '../styles/styles';
 import { RNS3 } from 'react-native-aws3';
+
 
 // const domain = "https://something-horizons.herokuapp.com";
 // const domain = 'https://still-citadel-74266.herokuapp.com';
@@ -179,8 +181,7 @@ class EditMyProfileScreen extends React.Component {
   render() {
     return (
         <Background>
-        <TopBarNav navigation={this.props.navigation} />
-        <View style={styles.container}>
+        <View style={{flex: 1, backgroundColor: 'transparent'}}>
           <TouchableOpacity
             style={styles.cancel}
             onPress={() => { this.props.navigation.navigate('MyProfile'); }}>
@@ -191,12 +192,13 @@ class EditMyProfileScreen extends React.Component {
             onPress={() => { this.postUpdateMyUserInfo(); }}>
             <Text style={{color: '#fff'}}>Done</Text>
           </TouchableOpacity>
+          <ScrollView style={{ flex: 1, margin: 0, padding: 0, marginTop: 60}}>
           <TouchableOpacity
-            style={{marginTop: -35, marginBottom: 5, alignItems: 'center'}}
+            style={{marginTop: 0, marginBottom: 5, alignItems: 'center'}}
             onPress={() => { this.pickImage(); }} >
             <Image
               style={{ width: 90, height: 90, borderColor: '#fff', borderWidth: 1, borderRadius: 45 }}
-              source={this.state.profileImage ? { uri: this.state.profileImage } : require('../assets/generic_user.png') } />
+              source={this.state.profileImage ? { uri: this.state.profileImage } : require('../assets/generic.jpg') } />
             <Text style={{fontSize: 14, color: '#fff', marginTop: 10}}>
               Change Profile Photo
             </Text>
@@ -244,6 +246,7 @@ class EditMyProfileScreen extends React.Component {
             value={this.state.gender}
             onChangeText={(text) => this.setState({ gender: text })}
           />
+        </ScrollView>
         </View>
         </Background>
     );

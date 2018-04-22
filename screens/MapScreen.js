@@ -21,7 +21,6 @@ import styles from '../styles/styles';
 // postgres SQL
 const domain = 'https://whispering-savannah-32809.herokuapp.com';
 
-
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 class MapScreen extends React.Component {
@@ -43,6 +42,7 @@ class MapScreen extends React.Component {
     this.postUserLocation = this.postUserLocation.bind(this);
   }
   componentWillMount() {
+    console.log('ANYTHING?')
     // setInterval(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -68,46 +68,60 @@ class MapScreen extends React.Component {
     })
     .catch((err) => { console.log(err); });
 
-    // this.postUserLocation();
+    this.postUserLocation();
   }
 
 
   postUserLocation() {
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-          this.setState({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-            error: null,
+    console.log("post user location");
+    if (navigator.geolocation) {
+      console.log("navigator.geolocation");
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              alert('it works');
+          }, function(error) {
+              alert('Error occurred. Error code: ' + error.code);
           });
-        console.log('lat', this.state.latitude)
-        console.log('long', this.state.longitude)
+      }else{
+          alert('no geolocation support');
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+            console.log("inside position")
+            this.setState({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              error: null,
+            });
+          console.log('lat', this.state.latitude)
+          console.log('long', this.state.longitude)
 
 
-        return fetch(`${domain}/recordlatandlong`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                latitude: this.state.latitude,
-                longitude: this.state.longitude,
+          return fetch(`${domain}/recordlatandlong`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  latitude: this.state.latitude,
+                  longitude: this.state.longitude,
+              })
             })
-          })
-          .then((res) => { res.json(); })
-          .then((resj) => {
-            if (resj.success === true) {
-              console.log('response location', resj);
-            } else { console.log('no location') }
-          })
-          .catch((err) => { console.log('it errored', err); });
+            .then((res) => { res.json(); })
+            .then((resj) => {
+              if (resj.success === true) {
+                console.log('response location', resj);
+              } else { console.log('no location') }
+            })
+            .catch((err) => { console.log('it errored', err); });
 
 
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
+        },
+        (error) => this.setState({ error: error.message }),
+        { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+      );
+    }
 
   }
   render() {
@@ -124,8 +138,10 @@ class MapScreen extends React.Component {
               longitudeDelta: 0.0201,
             }}
             region={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
+              // latitude: this.state.latitude,
+              // longitude: this.state.longitude,
+              latitude: 37.7749,
+              longitude: -122.4194,
               latitudeDelta: 0.0222,
               longitudeDelta: 0.0201,
             }} >
@@ -140,7 +156,8 @@ class MapScreen extends React.Component {
             </MapView.Marker> */}
             { this.state.usersarr.map(user => {
               return <MapView.Marker
-                coordinate={{longitude: user.longitude, latitude: user.latitude }}
+                // coordinate={{longitude: user.longitude, latitude: user.latitude }}
+                coordinate={{longitude: -122.4194, latitude: 37.7749}}
                 title={user.fullname}
                 description={user.username}>
                 <Image
